@@ -54,7 +54,7 @@ jobs:
           missing=0
           for name in AWS_ROLE_ARN TF_STATE_BUCKET; do
             if [ -z "${!name}" ]; then
-              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the course repository."
+              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the ai-tokenomics repository."
               missing=1
             fi
           done

@@ -40,7 +40,7 @@ jobs:
       - name: Check the repository variables
         run: |
           if [ -z "$AWS_ROLE_ARN" ]; then
-            echo "::error::Repository variable AWS_ROLE_ARN is not set. Run setup/configure-repos.sh in the course repository."
+            echo "::error::Repository variable AWS_ROLE_ARN is not set. Run setup/configure-repos.sh in the ai-tokenomics repository."
             exit 1
           fi
 

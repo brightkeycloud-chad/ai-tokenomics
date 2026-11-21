@@ -37,13 +37,13 @@ def default_settings() -> pathlib.Path:
     return pathlib.Path(base) / "settings.json"
 
 
-def course_status_line(python: str = sys.executable, script: pathlib.Path = SCRIPT) -> dict:
+def toolkit_status_line(python: str = sys.executable, script: pathlib.Path = SCRIPT) -> dict:
     """The statusLine value: run the status line script with this Python."""
     return {"type": "command", "command": f"{shlex.quote(python)} {shlex.quote(str(script))}",
             "padding": 0}
 
 
-def is_course(status_line) -> bool:
+def is_toolkit(status_line) -> bool:
     return isinstance(status_line, dict) and MARKER in str(status_line.get("command", ""))
 
 
@@ -80,7 +80,7 @@ def write_settings(path: pathlib.Path, data: dict) -> None:
 def change(data: dict, remove: bool, replace: bool, new: dict) -> tuple[dict, str]:
     """Return the new settings and a message. Raise SystemExit to stop."""
     current = data.get("statusLine")
-    if current is not None and not is_course(current) and not replace:
+    if current is not None and not is_toolkit(current) and not replace:
         shown = json.dumps(current)
         raise SystemExit("error: the settings already have a different status line:\n"
                          f"  {shown}\n"
@@ -114,7 +114,7 @@ def main(argv: list[str] | None = None) -> int:
 
     path = args.settings or default_settings()
     data = read_settings(path)
-    result, message = change(data, args.remove, args.replace, course_status_line(args.python))
+    result, message = change(data, args.remove, args.replace, toolkit_status_line(args.python))
     if args.dry_run:
         print(json.dumps(result, indent=2, ensure_ascii=False))
         print(f"Dry run: {message} {path} is not changed.", file=sys.stderr)

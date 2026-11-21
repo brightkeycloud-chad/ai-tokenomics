@@ -3,13 +3,13 @@
 A small internal **Service Status Board**: the current health of a handful of
 services, and the incident history behind each one.
 
-This application is teaching material for the video course *Tokenomics:
-Managing AI Agent Costs*. It is deliberately small enough to read on screen.
-It is not a production system.
+This application is a test workload for the `ai-tokenomics` toolkit. AI
+coding agents work on it, and the toolkit measures the cost. It is deliberately
+small enough to read on screen. It is not a production system.
 
 - **Stack:** Python, FastAPI, DynamoDB, served from a container
 - **Infrastructure:** the companion `tokenomics-status-board-infra` repository
-- **Course material:** the `ai-tokenomics` repository, under `workloads/`
+- **Source:** the `ai-tokenomics` toolkit repository, under `workloads/`
 
 ## How it fits together
 
@@ -56,7 +56,7 @@ shows the OIDC subject claim, assumes the deployment role, and checks ECR
 access. It changes nothing. Run it after setup, or when a deployment fails
 with `AccessDenied`.
 
-The workflows read these repository variables. The course script
+The workflows read these repository variables. The toolkit script
 `setup/configure-repos.sh` sets them from the infrastructure bootstrap outputs.
 
 | Variable | Example | Purpose |

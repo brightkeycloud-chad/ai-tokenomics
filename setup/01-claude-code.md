@@ -54,14 +54,14 @@ If the shell says `claude: command not found`, the install directory (`~/.local/
    ```
 
 3. In the session, type `/status`. Make sure that it shows your Claude account, not an API key.
-4. Type `/usage`. It shows how much of your 5-hour and weekly limits you have used. Lesson 2 uses this view.
+4. Type `/usage`. It shows how much of your 5-hour and weekly limits you have used. The Claude Code status line shows the same plan windows.
 5. Type `/exit`.
 
 To change accounts later, use `/logout` and `/login` in a session.
 
 ## 4. Make sure that print mode works
 
-Lesson 3 runs the agent without the interactive screen. Make sure that this works now. Run the command in any git repository:
+`bin/run-baseline` runs the agent without the interactive screen. Make sure that this works now. Run the command in any git repository:
 
 ```bash
 claude -p "Reply with the single word: ready" --output-format json
@@ -69,14 +69,14 @@ claude -p "Reply with the single word: ready" --output-format json
 
 The output is one JSON object. Find the `result`, `total_cost_usd`, and `usage` fields. On a subscription, `total_cost_usd` is an estimate at list price. You do not pay it; the request counts against your plan limits.
 
-## What to know for this course
+## What to know before you measure
 
-| Item | What it means for the demos |
+| Item | What it means for your measurements |
 |---|---|
-| Shared limits | Claude Code shares your usage limits with Claude chat. Do not record demos after a heavy chat session. |
-| Cache lifetime | On a subscription, the prompt cache for the main conversation lasts one hour. On an API key, it lasts five minutes. Lesson 4 uses this difference. |
-| Default model | Claude Code uses Opus by default. Lesson 3 sets the model explicitly for each run. |
-| Updates | Native installs update automatically. A new version can change a default. Lesson 3 records the version for each run. |
+| Shared limits | Claude Code shares your usage limits with Claude chat. Do not measure runs after a heavy chat session. |
+| Cache lifetime | On a subscription, the prompt cache for the main conversation lasts one hour. On an API key, it lasts five minutes. The Claude Code status line shows the cache lifetime (`1h` or `5m`) and when the cache goes cold. |
+| Default model | Claude Code uses Opus by default. `bin/run-baseline` sets the model explicitly for each run (`--model`). |
+| Updates | Native installs update automatically. A new version can change a default. `bin/run-baseline` writes the version of each run to the results log. |
 
 ## Uninstall
 

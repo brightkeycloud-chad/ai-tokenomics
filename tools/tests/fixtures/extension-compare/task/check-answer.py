@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the answer of a demo 5.2 run: did the agent find the cause of the 5xx errors?
+"""Check the answer of a run: did the agent find the cause of the 5xx errors?
 
 The fault (scripts/inject-fault.sh) removes the DynamoDB policy from the ECS
 task role. The answer finds the cause when it names all three parts:

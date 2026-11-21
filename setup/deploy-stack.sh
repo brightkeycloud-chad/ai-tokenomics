@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Deploy the Status Board stack for demo 5.2, with no prompts:
+# Deploy the Status Board stack for the CloudWatch logs example, with no prompts:
 #   1. Run the terraform workflow in the infrastructure repository.
 #   2. Run the deploy workflow in the application repository (image and seed data).
 #   3. Check that the board answers.

@@ -12,7 +12,7 @@
     "prompt_sha": "a0e49c99b43c",
     "config": "0af40a62a105",
     "variant": "test-output-hook",
-    "variant_sha": "9a723c64d921"
+    "variant_sha": "9e7ee1e351c1"
   },
   "agent": {
     "exit_code": 0,

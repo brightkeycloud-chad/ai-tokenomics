@@ -5,8 +5,8 @@ resource "aws_lb" "this" {
   security_groups    = [aws_security_group.alb.id]
   subnets            = [for subnet in aws_subnet.public : subnet.id]
 
-  # Left off so the demonstration can be torn down without emptying a bucket
-  # first. Access logs are not part of the evidence trail this course uses.
+  # Left off so the stack can be torn down without emptying a bucket
+  # first. Access logs are not part of the evidence that the agent reads.
   enable_deletion_protection = false
 
   tags = { Name = "${local.name}-alb" }

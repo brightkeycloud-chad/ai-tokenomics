@@ -2,6 +2,7 @@
 
     python3 -m unittest discover -s tools/tests
 """
+from __future__ import annotations
 import contextlib
 import io
 import json

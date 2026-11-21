@@ -53,32 +53,32 @@ If the shell says `codex: command not found`, open a new terminal so that your P
 
 3. Select **Sign in with ChatGPT**. Complete the sign-in in the browser with the account that has the Plus subscription.
 4. In the session, type `/status`. Make sure that it shows your ChatGPT sign-in and your remaining limits.
-5. Type `/usage` to see your token activity. Lesson 2 uses these views.
+5. Type `/usage` to see your token activity. The Codex footer shows the same limits.
 6. In a browser that is signed in to the same ChatGPT account, open the usage dashboard: <https://chatgpt.com/settings/usage>. It shows the allowance that Codex shares with other products. It does not show Codex usage separately.
 
    The address `chatgpt.com/codex/settings/usage`, which some OpenAI pages still link to, redirects to the ChatGPT home page. If the address changes again, open the profile menu, then **Settings**, then **Usage**.
 7. Exit the session.
 
-Codex keeps its settings in `~/.codex/config.toml`. Lessons 3 and 6 add course settings to that file.
+Codex keeps its settings in `~/.codex/config.toml`. The installer and `setup/codex-footer.py` change only the two footer keys in `[tui]`. `bin/run-baseline` and `bin/codex-local` give their settings as command options and do not change that file.
 
 ## 4. Make sure that non-interactive mode works
 
-Lesson 3 runs Codex without the interactive screen. Make sure that this works now. Run the command in a git repository:
+`bin/run-baseline` runs Codex without the interactive screen. Make sure that this works now. Run the command in a git repository:
 
 ```bash
 codex exec --json "Reply with the single word: ready"
 ```
 
-The output is one JSON event on each line. Find the events that report token usage: input, cached input, output, and reasoning tokens. The `tokenomics` toolkit reads these events from Lesson 2.
+The output is one JSON event on each line. Find the events that report token usage: input, cached input, output, and reasoning tokens. `tokenomics codex` reads these events.
 
 If Codex prints `Not inside a trusted directory and --skip-git-repo-check was not specified.`, the current directory is not a git repository. Go to one, for example `cd ~/tokenomics/tokenomics-status-board-app`, and run the command again. A headless run can change files without a prompt, so Codex requires git, where you can see and undo the changes.
 
-## What to know for this course
+## What to know before you measure
 
-| Item | What it means for the demos |
+| Item | What it means for your measurements |
 |---|---|
-| Shared limits | Codex shares one allowance with ChatGPT Work, workspace agents, and ChatGPT for Excel. Chat conversations do not count. Do not use those products just before or during a recording. The dashboard shows only the shared total, so measure a Codex run with `/status` before and after it. |
-| No dollar figure | Codex reports the share of your limits that you used, not a dollar cost. Lesson 2 explains how to convert usage with the rate card. |
+| Shared limits | Codex shares one allowance with ChatGPT Work, workspace agents, and ChatGPT for Excel. Chat conversations do not count. Do not use those products just before or during a measured run. The dashboard shows only the shared total, so measure a Codex run with `/status` before and after it. |
+| No dollar figure | Codex reports the share of your limits that you used, not a dollar cost. `tokenomics codex` converts the tokens to an API cost and a credit cost with the rate card in `config/rates.json`. |
 | Model names | Record the full model name for each run. Aliases change when OpenAI ships a new model. |
 | Updates | Re-run the installer to update. Record the version for each run. |
 

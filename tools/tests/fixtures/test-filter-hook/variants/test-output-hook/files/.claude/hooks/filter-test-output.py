@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""filter-test-output: a Claude Code PreToolUse hook for pytest (Lesson 5.4).
+"""filter-test-output: a Claude Code PreToolUse hook for pytest.
 
 Claude Code runs this hook before each Bash command (see .claude/settings.json).
 The hook reads the tool call as JSON on stdin.

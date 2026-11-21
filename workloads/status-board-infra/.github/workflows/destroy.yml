@@ -1,6 +1,6 @@
 name: destroy
 
-# Tears the stack down after a rehearsal or a delivery. Manual only, and it
+# Tears the stack down after you use it. Manual only, and it
 # refuses to run unless the confirmation field is typed exactly.
 on:
   workflow_dispatch:
@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: false
 
 # Account-specific values come from repository variables, which
-# setup/configure-repos.sh in the course repository sets from the bootstrap
-# outputs. The role ARN is not a secret. The trust policy on the role is what
+# setup/configure-repos.sh in the ai-tokenomics toolkit repository sets from
+# the bootstrap outputs. The role ARN is not a secret. The trust policy on the role is what
 # limits it to this repository, on main or a pull request.
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
@@ -59,7 +59,7 @@ jobs:
           missing=0
           for name in AWS_ROLE_ARN TF_STATE_BUCKET; do
             if [ -z "${!name}" ]; then
-              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the course repository."
+              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the ai-tokenomics repository."
               missing=1
             fi
           done

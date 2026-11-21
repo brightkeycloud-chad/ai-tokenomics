@@ -14,7 +14,7 @@ output "app_deploy_role_arn" {
 }
 
 output "agent_role_arn" {
-  description = "Read-only role an agent assumes to investigate the stack, for example CloudWatch logs in demo 5.2. Reference it from an AWS CLI profile."
+  description = "Read-only role an agent assumes to investigate the stack, for example to read CloudWatch logs. Reference it from an AWS CLI profile."
   value       = aws_iam_role.agent.arn
 }
 

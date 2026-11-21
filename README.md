@@ -63,7 +63,7 @@ To select other items, use `/statusline` in Codex, or run `python3 setup/codex-f
 | Item | Requirement |
 |---|---|
 | Operating system | macOS or Linux, with bash |
-| Python | 3.9 or later for the status lines (the `python3` of macOS is sufficient). 3.10 or later for the other tools. Standard library only: no packages to install. |
+| Python | 3.9 or later for every tool (the `python3` of macOS is sufficient). Standard library only: no packages to install. |
 | Claude Code | For the Claude Code status line. The plan windows show only on a Claude subscription. |
 | Codex | For the Codex footer. The limit items need a ChatGPT sign-in. |
 

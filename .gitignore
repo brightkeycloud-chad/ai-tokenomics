@@ -21,7 +21,7 @@ auth.json
 
 # Personal agent configuration and agent session directories.
 # Git does not ignore *.jsonl files. Commit only reduced transcripts
-# that have no text and no paths, such as the demo 2.2 sample session.
+# that have no text and no paths (`tokenomics reduce` makes them).
 CLAUDE.local.md
 .claude/settings.local.json
 .claude/projects/
@@ -48,8 +48,7 @@ output/
 *.bin
 .ollama/
 
-# Course source material (slides, scripts, outlines).
-# Keep these out of the demo repository.
+# Office documents. Keep these out of the repository.
 *.pptx
 *.docx
 *.xlsx

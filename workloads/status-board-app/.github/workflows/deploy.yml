@@ -24,8 +24,8 @@ defaults:
     shell: bash
 
 # Account-specific values come from repository variables, which
-# setup/configure-repos.sh in the course repository sets from the bootstrap
-# outputs. The role ARN is not a secret. The trust policy on the role is what
+# setup/configure-repos.sh in the ai-tokenomics toolkit repository sets from
+# the bootstrap outputs. The role ARN is not a secret. The trust policy on the role is what
 # limits it to this repository, on main or a pull request. The ECR repository,
 # the cluster, the service and the task family all share the name prefix.
 env:
@@ -78,7 +78,7 @@ jobs:
           missing=0
           for name in AWS_ROLE_ARN BOARD_URL; do
             if [ -z "${!name}" ]; then
-              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the course repository."
+              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the ai-tokenomics repository."
               missing=1
             fi
           done

@@ -84,7 +84,7 @@ Next steps (see setup/04-workloads.md):
   gh workflow run deploy.yml --repo $APP          # after the stack is up, about 3 minutes
   curl -s -o /dev/null -w '%{http_code}\n' $BOARD_URL/healthz   # expect 200
 
-For demo 5.2, add this read-only profile to ~/.aws/config:
+For the CloudWatch logs example, add this read-only profile to ~/.aws/config:
 
   [profile tokenomics-agent]
   role_arn       = $AGENT_ROLE

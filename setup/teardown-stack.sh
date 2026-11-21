@@ -17,7 +17,7 @@
 #   setup/teardown-stack.sh --dry-run   show what exists now; change nothing
 #
 # It refuses to run unless the name prefix starts with "tokenomics-", so it
-# cannot touch the stack of another course in the same account.
+# cannot touch another stack in the same account.
 #
 # Settings: OWNER, APP_REPO, INFRA_REPO (see setup/lib-stack.sh).
 

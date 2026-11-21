@@ -1,12 +1,12 @@
 # status-board-infra
 
-AWS infrastructure for the **Service Status Board**, the application used in
-the video course *Tokenomics: Managing AI Agent Costs*.
+AWS infrastructure for the **Service Status Board**, a test workload for the
+`ai-tokenomics` toolkit.
 
 - **Application:** the companion `tokenomics-status-board-app` repository
-- **Course material:** the `ai-tokenomics` repository, under `workloads/`
+- **Source:** the `ai-tokenomics` toolkit repository, under `workloads/`
 
-This is teaching material, not a production system.
+This is a test workload, not a production system.
 
 ## What gets built
 
@@ -21,7 +21,8 @@ gateway per zone. It needs no subnet of its own, and it costs one gateway-hour
 instead of one per zone.
 
 The application writes its logs to the CloudWatch log group
-`/ecs/<name prefix>`. The course uses that log group in demo 5.2.
+`/ecs/<name prefix>`. In the CloudWatch logs example of the toolkit, an agent
+reads that log group to find the cause of 5xx errors.
 
 ## Two layers, and why
 
@@ -71,7 +72,7 @@ board name in the same region, before you apply `terraform/`.
 
 ## Bringing it up
 
-The course repository automates steps 1 and 3. See `setup/` in
+The toolkit repository automates steps 1 and 3. See `setup/` in
 `ai-tokenomics`. By hand:
 
 ```bash
@@ -108,15 +109,15 @@ expected on a fresh build.
 
 ## Tearing it down
 
-Always tear down after a rehearsal or a recording. The stack costs money for
-every hour it exists.
+Always tear down the stack after you use it. The stack costs money for every
+hour it exists.
 
 ```bash
 # 1. The stack: run the destroy workflow with confirm=destroy, or by hand:
 cd terraform
 terraform destroy
 
-# 2. Only if you are finished with the whole course. This removes the
+# 2. Only if you no longer need the stack. This removes the
 #    OIDC provider (if this layer created it) and the roles, so step 1 must
 #    come first.
 cd ../bootstrap
@@ -164,7 +165,7 @@ Priced in `us-east-1` from the AWS Pricing API.
 | DynamoDB on demand, ECR, CloudWatch Logs | usage based | under $1 |
 | **Total** | **$0.0999/hour** | **about $56.50** |
 
-A two-day rehearsal window costs roughly **$4.80**. Data processed by the NAT
-gateway adds $0.045 per GB, which is pennies at demonstration volumes.
+A stack that exists for two days costs roughly **$4.80**. Data processed by the NAT
+gateway adds $0.045 per GB, which is pennies at test volumes.
 
 This stack does not create AWS Config or CloudTrail resources.

@@ -1,16 +1,16 @@
 # Publish and deploy the workloads
 
-The course uses two repositories: the Status Board application and its Terraform infrastructure. Templates for both are in [`workloads/`](../workloads). This guide publishes them to your GitHub account, connects GitHub Actions to your AWS account, and deploys the stack.
+The toolkit uses two repositories: the Status Board application and its Terraform infrastructure. Templates for both are in [`workloads/`](../workloads). This guide publishes them to your GitHub account, connects GitHub Actions to your AWS account, and deploys the stack.
 
 ## When you need this
 
-| Lessons | What you need |
+| Tool | What you need |
 |---|---|
-| 1 to 4 | Nothing from this guide. The baseline tasks run on local copies of `workloads/`. |
-| 5 (demo 5.2) | The deployed stack. The agent reads its CloudWatch logs. |
-| 6 and 7 | Nothing from this guide. |
+| `bin/run-baseline` and the baseline tasks | Nothing from this guide. The baseline tasks run on local copies of `workloads/`. |
+| The CloudWatch logs example (`tokenomics extensions`) | The deployed stack. The agent reads its CloudWatch logs. |
+| `bin/claude-local`, `bin/codex-local`, and `tokenomics ollama` | Nothing from this guide. |
 
-You can publish the repositories at any time. **Deploy the stack only before you record demo 5.2, and tear it down after.** It costs about $0.10 for each hour that it exists.
+You can publish the repositories at any time. **Deploy the stack only before you run the CloudWatch logs example, and tear it down after.** It costs about $0.10 for each hour that it exists.
 
 ## Requirements
 
@@ -26,7 +26,7 @@ If your zone is not `awsf.brightkey.cloud`, set `HOSTED_ZONE_NAME` before step 1
 
 ## 1. Publish the repositories
 
-From the root of this course repository:
+From the root of this toolkit repository:
 
 ```bash
 HOSTED_ZONE_NAME=awsf.brightkey.cloud ./setup/publish-workloads.sh
@@ -52,11 +52,11 @@ terraform -chdir=bootstrap init -backend-config=backend.hcl
 terraform -chdir=bootstrap apply                    # OIDC provider (if necessary) and three IAM roles
 ```
 
-This layer stays in your account for the whole course. It costs nothing.
+This layer stays in your account until you remove it. It costs nothing.
 
 ## 3. Set the repository variables
 
-From the root of this course repository:
+From the root of this toolkit repository:
 
 ```bash
 SUBDOMAIN=tokenomics ./setup/configure-repos.sh
@@ -69,7 +69,7 @@ The script sets the variables that the workflows read, and enables GitHub Action
 | Infrastructure | `AWS_REGION`, `AWS_ROLE_ARN`, `TF_STATE_BUCKET`, `NAME_PREFIX`, `ENV_NAME`, `HOSTED_ZONE_NAME`, `SUBDOMAIN`, and `CERTIFICATE_DOMAIN` if set |
 | Application | `AWS_REGION`, `AWS_ROLE_ARN`, `NAME_PREFIX`, `BOARD_URL` |
 
-The script also prints an AWS CLI profile for the read-only agent role. Add it to `~/.aws/config`. Demo 5.2 uses it.
+The script also prints an AWS CLI profile for the read-only agent role. Add it to `~/.aws/config`. The agent uses it in the CloudWatch logs example.
 
 ## 4. Check the AWS access
 
@@ -91,9 +91,9 @@ Expected result:
 
 Run it again whenever a workflow fails with `AccessDenied`.
 
-## 5. Deploy the stack (before demo 5.2)
+## 5. Deploy the stack (before the CloudWatch logs example)
 
-From the root of this course repository:
+From the root of this toolkit repository:
 
 ```bash
 setup/deploy-stack.sh
@@ -110,9 +110,9 @@ If a workflow fails, the script stops and prints the failed steps. To check the 
 
 The script is safe to run again. Until the application deployment finishes, the ECS service restarts because it has no image. That is expected on a new stack.
 
-## 6. Tear down the stack (after demo 5.2)
+## 6. Tear down the stack (after the CloudWatch logs example)
 
-From the root of this course repository:
+From the root of this toolkit repository:
 
 ```bash
 setup/teardown-stack.sh
@@ -124,9 +124,9 @@ The script runs with no prompts, in about 4 minutes:
 2. It deregisters and deletes the ECS task definitions that the application deployments registered. Terraform removes only its own revision. This step uses your own AWS credentials. If `AWS_PROFILE` is set to the read-only agent profile, the script stops.
 3. It checks for clusters, load balancers, NAT gateways, tables, ECR repositories, and task definitions with the name prefix. It exits with an error if any remain.
 
-To see what exists now without changing anything, use `setup/teardown-stack.sh --dry-run`. The script refuses to run unless the name prefix starts with `tokenomics-`, so it cannot touch the stack of another course in the same account.
+To see what exists now without changing anything, use `setup/teardown-stack.sh --dry-run`. The script refuses to run unless the name prefix starts with `tokenomics-`, so it cannot touch another stack in the same account.
 
-The bootstrap layer and the state bucket stay. They cost nothing or almost nothing. To remove them at the end of the course, see "Tearing it down" in the infrastructure repository README.
+The bootstrap layer and the state bucket stay. They cost nothing or almost nothing. To remove them when you no longer need the stack, see "Tearing it down" in the infrastructure repository README.
 
 ## Things that can go wrong
 

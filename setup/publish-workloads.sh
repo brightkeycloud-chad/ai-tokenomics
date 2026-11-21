@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# Publish the two course workloads as GitHub repositories in your account.
+# Publish the two workloads as GitHub repositories in your account.
 #
 # GitHub Actions runs only from the root of a repository, so the workloads in
-# this course repository are templates. This script copies each one to a local
+# this toolkit repository are templates. This script copies each one to a local
 # directory, makes it a git repository, creates the GitHub repository, and
 # pushes it. It then writes bootstrap/terraform.tfvars in the infrastructure
 # copy, with the GitHub ids that the OIDC trust policies need.
@@ -69,10 +69,10 @@ publish() {
 
   git -C "$dir" init --quiet -b main
   git -C "$dir" add -A
-  git -C "$dir" commit --quiet -m "Initial commit from the ai-tokenomics course workloads"
+  git -C "$dir" commit --quiet -m "Initial commit from the ai-tokenomics workloads"
 
   gh repo create "$OWNER/$name" "--$VISIBILITY" \
-    --description "Service Status Board ($source) for the Tokenomics course" >/dev/null
+    --description "Service Status Board ($source) from the ai-tokenomics toolkit" >/dev/null
   # Keep workflows off until configure-repos.sh sets the repository variables.
   gh api --silent -X PUT "repos/$OWNER/$name/actions/permissions" -F enabled=false
 
@@ -108,7 +108,7 @@ subject_prefix() {
   info=$(gh api "repos/$OWNER/$repo/actions/oidc/customization/sub")
   if [ "$(jq -r .use_default <<<"$info")" != "true" ]; then
     echo "error: $OWNER/$repo uses a custom OIDC subject template ($info)." >&2
-    echo "       The course trust policy expects the default template. Reset it with:" >&2
+    echo "       The bootstrap trust policy expects the default template. Reset it with:" >&2
     echo "       gh api -X PUT repos/$OWNER/$repo/actions/oidc/customization/sub -F use_default=true" >&2
     exit 1
   fi

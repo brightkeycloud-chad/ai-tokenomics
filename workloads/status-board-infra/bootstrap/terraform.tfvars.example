@@ -1,5 +1,5 @@
-# Copy to terraform.tfvars and fill in. setup/publish-workloads.sh in the course
-# repository writes this file for you. terraform.tfvars is not committed.
+# Copy to terraform.tfvars and fill in. setup/publish-workloads.sh in the
+# ai-tokenomics toolkit repository writes this file for you. terraform.tfvars is not committed.
 #
 # Find the numeric ids with:
 #   gh api /users/<owner> --jq .id

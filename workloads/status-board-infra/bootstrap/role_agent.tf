@@ -1,5 +1,5 @@
 # The role an agent assumes to investigate the running stack, for example to
-# read CloudWatch logs and metrics in demo 5.2.
+# read CloudWatch logs and metrics in the CloudWatch logs example.
 #
 # This role is tool scoping written in IAM. The agent can read CloudWatch,
 # CloudTrail, AWS Config and the running resources, and it cannot change any

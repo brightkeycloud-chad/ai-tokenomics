@@ -1007,11 +1007,15 @@ def plan_run(args) -> dict:
 
 
 def repo_path(path: pathlib.Path) -> str:
-    """A path inside the repository as a relative path; any other path as it is."""
-    try:
-        return str(pathlib.Path(path).resolve().relative_to(REPO_ROOT))
-    except ValueError:
-        return str(path)
+    """A path inside a project root (see project_roots) as a path relative to
+    that root; any other path as it is."""
+    resolved = pathlib.Path(path).resolve()
+    for root in project_roots(REPO_ROOT):
+        try:
+            return str(resolved.relative_to(root.resolve()))
+        except ValueError:
+            continue
+    return str(path)
 
 
 # The items of a run plan that `--dry-run --brief` shows: what the harness pins.
@@ -1027,7 +1031,7 @@ def plan_items(p: dict, brief: bool = False) -> list[tuple[str, str]]:
     lines = [("Task", f"{task['id']}: {task['title']}"),
              ("Workload", f"workloads/{task['workload']} at {p['ref']} "
                           f"(tree {p['workload_tree']})"),
-             ("Prompt", f"{p['prompt_path'].relative_to(REPO_ROOT)} "
+             ("Prompt", f"{repo_path(p['prompt_path'])} "
                         f"(sha256 {p['prompt_sha']})"),
              ("Copy", str(p['copy_dir']).replace(home, '~')),
              ("Setup", task['setup'])]

@@ -1,0 +1,2 @@
+{"time": "2026-11-17T06:27:56+00:00", "event": "rewrite", "tool_use_id": "toolu_01Arn8fjso43NAZ773ejAYUJ"}
+{"time": "2026-11-17T06:27:58+00:00", "event": "filtered", "tool_use_id": "toolu_01Arn8fjso43NAZ773ejAYUJ", "exit": 0, "lines_in": 350, "lines_out": 1, "bytes_in": 27645, "bytes_out": 196, "summary_found": true}

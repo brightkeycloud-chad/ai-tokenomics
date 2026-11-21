@@ -1,0 +1,5 @@
+{
+  "name": "cache-probe-subagent",
+  "title": "Adds one project subagent, cache-probe: a pinned small model and a fixed read-only task (demo 4.5)",
+  "workload": "status-board-app"
+}

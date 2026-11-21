@@ -1,0 +1,11 @@
+{
+  "title": "Worked example: the cheaper attempt is the costlier task",
+  "note": "Round, hypothetical numbers from slide 1.5. Waiting cost is zero.",
+  "currency": "USD",
+  "hourly_rate": 90,
+  "defaults": {"rework_minutes": 10, "wait_minutes": 0},
+  "options": [
+    {"name": "Model A", "token_cost": 0.40, "success_rate": "50%"},
+    {"name": "Model B", "token_cost": 1.00, "success_rate": "90%"}
+  ]
+}

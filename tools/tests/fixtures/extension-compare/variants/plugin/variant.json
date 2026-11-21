@@ -1,0 +1,6 @@
+{
+  "name": "plugin",
+  "title": "A plugin (plugins/cloudwatch-logs) that packages the same skill and the same MCP server, loaded with --plugin-dir",
+  "workload": "status-board-app",
+  "claude_args": ["--plugin-dir", "{copy}/plugins/cloudwatch-logs"]
+}

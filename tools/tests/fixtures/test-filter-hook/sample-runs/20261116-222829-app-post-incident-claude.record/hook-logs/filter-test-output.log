@@ -1,0 +1,2 @@
+{"event": "rewrite", "tool_use_id": "toolu_01GMyYYpUJD6H2yHCEUcTU2C", "note": "rebuilt on 2026-11-21 from the record and an earlier tool-results report; the original log was lost"}
+{"event": "filtered", "tool_use_id": "toolu_01GMyYYpUJD6H2yHCEUcTU2C", "exit": 0, "bytes_out": 196, "note": "rebuilt on 2026-11-21; bytes_in and the times were not kept"}

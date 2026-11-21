@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "run_id": "20261116-222739-app-post-incident-claude",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "app-post-incident",
+    "tool": "claude",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "workload": "status-board-app",
+    "workload_tree": "d38981bbdc85",
+    "prompt_sha": "a0e49c99b43c",
+    "config": "0af40a62a105",
+    "variant": "test-output-hook",
+    "variant_sha": "9a723c64d921"
+  },
+  "agent": {
+    "exit_code": 0,
+    "timed_out": false,
+    "wall_seconds": 22.0
+  },
+  "changed": [
+    "app/main.py",
+    "app/models.py",
+    "tests/test_api.py"
+  ],
+  "checks": {
+    "acceptance": [
+      {
+        "rule": "pytest",
+        "ok": true,
+        "failed": []
+      }
+    ],
+    "rules": [
+      {
+        "rule": "1 validate in validators.py",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "2 DynamoDB only through store.py",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "3 return a model",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "4 test every route",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "5 /healthz free of dependencies",
+        "ok": true,
+        "failed": []
+      }
+    ]
+  },
+  "hook_logs": {
+    "filter-test-output.log": 2
+  },
+  "row": {
+    "run_id": "20261116-222739-app-post-incident-claude",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "app-post-incident",
+    "tool": "claude",
+    "tool_version": "2.1.326",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "workload_tree": "d38981bbdc85",
+    "prompt_sha": "a0e49c99b43c",
+    "variant": "test-output-hook",
+    "config": "0af40a62a105",
+    "tests_pass": "yes",
+    "rules_followed": "yes",
+    "manual_fixes": 0,
+    "input": 10,
+    "cache_write": 18271,
+    "cache_read": 99260,
+    "output": 3170,
+    "reasoning": "",
+    "context_peak": 26933,
+    "cache_hit": 0.844,
+    "cost_list_usd": 0.1147,
+    "cost_credits": "",
+    "vendor_estimate_usd": 0.1147,
+    "window_5h_pct": "",
+    "wall_seconds": 22.0,
+    "api_seconds": 18.6,
+    "your_seconds": 0,
+    "rules_broken": "",
+    "notes": ""
+  }
+}

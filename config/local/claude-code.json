@@ -1,0 +1,27 @@
+{
+  "_about": "Claude Code on the local model (demos 6.4 and 7.1). bin/claude-local and bin/run-baseline set these variables for one process only. They change no shell profile and no settings file. {model}, {context_length}, and {base_url} come from ollama.json and this file. Sources: https://docs.ollama.com/integrations/claude-code (manual setup), the variables that `ollama launch claude` sets (Ollama 0.40.16), and https://code.claude.com/docs/en/model-config (CLAUDE_CODE_MAX_CONTEXT_TOKENS for a model ID that Claude Code does not know).",
+  "base_url": "http://localhost:11434",
+  "set": {
+    "ANTHROPIC_BASE_URL": "{base_url}",
+    "ANTHROPIC_AUTH_TOKEN": "ollama",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "{model}",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "{model}",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "{model}",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "{model}",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "{model}",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "{context_length}",
+    "CLAUDE_CODE_ATTRIBUTION_HEADER": "0"
+  },
+  "remove": [
+    "ANTHROPIC_API_KEY",
+    "OPENAI_API_KEY",
+    "ANTHROPIC_MODEL",
+    "CLAUDE_CODE_USE_BEDROCK",
+    "CLAUDE_CODE_USE_VERTEX",
+    "CLAUDE_CODE_USE_FOUNDRY",
+    "CLAUDE_CODE_USE_MANTLE",
+    "CLAUDE_CODE_USE_GATEWAY",
+    "CLAUDE_CODE_USE_ANTHROPIC_AWS"
+  ],
+  "checked": "2026-11-17"
+}

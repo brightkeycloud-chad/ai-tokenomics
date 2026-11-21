@@ -1,0 +1,23 @@
+{
+  "id": "infra-5xx-alarm",
+  "title": "Add a load balancer 5xx alarm and an SNS topic to the Terraform",
+  "workload": "status-board-infra",
+  "setup": "terraform-init",
+  "prompt": "prompt.md",
+  "reference": "reference.patch",
+  "acceptance": {
+    "copy": {"hidden/baseline_acceptance.tftest.hcl": "terraform/tests/baseline_acceptance.tftest.hcl"},
+    "commands": [
+      {"name": "terraform fmt", "cwd": "terraform", "run": ["terraform", "fmt", "-check", "-recursive", "-no-color"]},
+      {"name": "terraform validate", "cwd": "terraform", "run": ["terraform", "validate", "-no-color"]},
+      {"name": "terraform test", "cwd": "terraform", "run": ["terraform", "test", "-no-color"]}
+    ]
+  },
+  "rules": {
+    "copy": {"hidden/baseline_rules.tftest.hcl": "terraform/tests/baseline_rules.tftest.hcl"},
+    "commands": [
+      {"name": "terraform test (rules)", "cwd": "terraform", "run": ["terraform", "test", "-no-color", "-filter=tests/baseline_rules.tftest.hcl"]}
+    ],
+    "static": "infra-house-rules"
+  }
+}

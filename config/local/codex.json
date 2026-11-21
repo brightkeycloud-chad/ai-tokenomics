@@ -1,0 +1,21 @@
+{
+  "_about": "Codex on the local model (demos 6.5 and 7.1). bin/codex-local and bin/run-baseline give these settings as `codex -c key=value` for one process only. They change no shell profile and no file in ~/.codex. The settings are the profile that `ollama launch codex` writes (Ollama 0.40.16): a provider for the Ollama Responses API and a model catalog. codex_home is a separate Codex home with no ChatGPT sign-in, so no request can go to the plan, and Codex cannot write to ~/.codex/config.toml. {model}, {base_url}, {catalog}, and {context_length} come from ollama.json, this file, and codex-models.json. Sources: https://docs.ollama.com/integrations/codex (checked 2026-11-17), and the files that `ollama launch codex --config` writes.",
+  "base_url": "http://localhost:11434/v1/",
+  "codex_home": "~/.codex-local",
+  "set": {
+    "model_provider": "ollama-local",
+    "model_providers.ollama-local.name": "Ollama",
+    "model_providers.ollama-local.base_url": "{base_url}",
+    "model_providers.ollama-local.wire_api": "responses",
+    "model_catalog_json": "{catalog}",
+    "model_context_window": "{context_length}",
+    "web_search": "disabled"
+  },
+  "remove": [
+    "OPENAI_API_KEY",
+    "CODEX_API_KEY",
+    "OPENAI_BASE_URL",
+    "ANTHROPIC_API_KEY"
+  ],
+  "checked": "2026-11-17"
+}

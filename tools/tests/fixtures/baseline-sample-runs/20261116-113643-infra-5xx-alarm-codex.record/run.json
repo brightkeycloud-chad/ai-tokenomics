@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "run_id": "20261116-113643-infra-5xx-alarm-codex",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "infra-5xx-alarm",
+    "tool": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "workload": "status-board-infra",
+    "workload_tree": "138302f4b730",
+    "prompt_sha": "3b8f8ed1a043"
+  },
+  "agent": {
+    "exit_code": 0,
+    "timed_out": false,
+    "wall_seconds": 30.4
+  },
+  "changed": [
+    "terraform/alarms.tf",
+    "terraform/outputs.tf",
+    "terraform/variables.tf"
+  ],
+  "checks": {
+    "acceptance": [
+      {
+        "rule": "terraform fmt",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "terraform validate",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "terraform test",
+        "ok": true,
+        "failed": []
+      }
+    ],
+    "rules": [
+      {
+        "rule": "terraform test (rules)",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "3 look values up, do not hard-code them",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "4 describe every variable and output",
+        "ok": true,
+        "failed": []
+      }
+    ]
+  },
+  "row": {
+    "run_id": "20261116-113643-infra-5xx-alarm-codex",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "infra-5xx-alarm",
+    "tool": "codex",
+    "tool_version": "0.169.0",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "workload_tree": "138302f4b730",
+    "prompt_sha": "3b8f8ed1a043",
+    "tests_pass": "yes",
+    "rules_followed": "yes",
+    "manual_fixes": 0,
+    "input": 9408,
+    "cache_write": 0,
+    "cache_read": 66816,
+    "output": 1055,
+    "reasoning": 27,
+    "context_peak": 22029,
+    "cache_hit": 0.877,
+    "cost_list_usd": 0.036,
+    "cost_credits": 0.9012,
+    "vendor_estimate_usd": "",
+    "window_5h_pct": 0.0,
+    "wall_seconds": 30.4,
+    "api_seconds": 26.6,
+    "your_seconds": 0,
+    "rules_broken": "",
+    "notes": ""
+  }
+}

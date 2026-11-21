@@ -1,0 +1,11 @@
+{
+  "title": "Verbose test output on the app task, Claude Code baseline setup, without and with the filter-test-output hook",
+  "tasks": ["app-post-incident"],
+  "repetitions": 2,
+  "hourly_rate": 90,
+  "rework_minutes": {"app-post-incident": 10},
+  "setups": [
+    {"tool": "claude", "model": "claude-sonnet-5-5", "effort": "medium", "label": "No hook", "variant": "variants/verbose-tests", "baseline": true},
+    {"tool": "claude", "model": "claude-sonnet-5-5", "effort": "medium", "label": "Hook", "variant": "variants/test-output-hook"}
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "permissions": {
+    "defaultMode": "dontAsk",
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill",
+      "Bash(aws logs describe-log-groups *)",
+      "Bash(aws logs describe-log-streams *)",
+      "Bash(aws logs filter-log-events *)",
+      "Bash(aws logs get-log-events *)",
+      "Bash(aws logs start-query *)",
+      "Bash(aws logs get-query-results *)",
+      "Bash(aws logs tail *)",
+      "Bash(aws cloudwatch list-metrics *)",
+      "Bash(aws cloudwatch get-metric-data *)",
+      "Bash(aws cloudwatch get-metric-statistics *)",
+      "Bash(aws cloudwatch describe-alarms *)",
+      "Bash(aws cloudwatch describe-alarm-history *)",
+      "Bash(jq *)",
+      "Bash(grep *)",
+      "Bash(head *)",
+      "Bash(sort *)",
+      "Bash(uniq *)",
+      "Bash(wc *)",
+      "Bash(date *)",
+      "Bash(sleep *)",
+      "mcp__cloudwatch__*",
+      "mcp__plugin_cloudwatch-logs_cloudwatch__*"
+    ],
+    "deny": [
+      "Edit",
+      "Write",
+      "NotebookEdit",
+      "WebFetch",
+      "WebSearch",
+      "Bash(aws * --profile *)",
+      "Bash(aws * --endpoint-url *)",
+      "Bash(aws logs tail *--follow*)",
+      "Bash(aws configure *)",
+      "Bash(aws sts *)",
+      "Bash(aws iam *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
+    ]
+  },
+  "env": {
+    "AWS_PROFILE": "tokenomics-agent",
+    "AWS_REGION": "us-east-1",
+    "AWS_PAGER": ""
+  },
+  "enabledMcpjsonServers": [
+    "cloudwatch"
+  ],
+  "disableClaudeAiConnectors": true
+}

@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "run_id": "20261116-221732-infra-5xx-alarm-claude",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "infra-5xx-alarm",
+    "tool": "claude",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "workload": "status-board-infra",
+    "workload_tree": "138302f4b730",
+    "prompt_sha": "3b8f8ed1a043",
+    "config": "0af40a62a105"
+  },
+  "agent": {
+    "exit_code": 0,
+    "timed_out": false,
+    "wall_seconds": 13.5
+  },
+  "changed": [
+    "terraform/alarms.tf"
+  ],
+  "checks": {
+    "acceptance": [
+      {
+        "rule": "terraform fmt",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "terraform validate",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "terraform test",
+        "ok": true,
+        "failed": []
+      }
+    ],
+    "rules": [
+      {
+        "rule": "terraform test (rules)",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "3 look values up, do not hard-code them",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "4 describe every variable and output",
+        "ok": true,
+        "failed": []
+      }
+    ]
+  },
+  "row": {
+    "run_id": "20261116-221732-infra-5xx-alarm-claude",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "infra-5xx-alarm",
+    "tool": "claude",
+    "tool_version": "2.1.326",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "workload_tree": "138302f4b730",
+    "prompt_sha": "3b8f8ed1a043",
+    "variant": "",
+    "config": "0af40a62a105",
+    "tests_pass": "yes",
+    "rules_followed": "yes",
+    "manual_fixes": 0,
+    "input": 8,
+    "cache_write": 11286,
+    "cache_read": 63713,
+    "output": 1563,
+    "reasoning": "",
+    "context_peak": 19948,
+    "cache_hit": 0.849,
+    "cost_list_usd": 0.0672,
+    "cost_credits": "",
+    "vendor_estimate_usd": 0.0672,
+    "window_5h_pct": "",
+    "wall_seconds": 13.5,
+    "api_seconds": 10.8,
+    "your_seconds": 0,
+    "rules_broken": "",
+    "notes": ""
+  }
+}

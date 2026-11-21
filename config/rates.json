@@ -1,0 +1,151 @@
+{
+  "_readme": [
+    "Rate profiles for the tokenomics tools. The course is price-agnostic:",
+    "these values are data that you look up and record, not facts the code knows.",
+    "Before you record a cost, check each value on the vendor price list and update 'checked'.",
+    "Form 1, per_mtok: price per million tokens for each meter, in 'unit' (for example USD).",
+    "Form 2, multipliers: rate relative to the input rate. Cost is then in input-equivalent tokens.",
+    "Every profile needs all five meters: input, cache_write_5m, cache_write_1h, cache_read, output.",
+    "Profile names are the model IDs that Claude Code and the API report, so later tools can match them.",
+    "Optional long_prompt: {over_tokens, profile}. A request with a longer prompt (input + cache writes + cache reads) uses that profile.",
+    "cache_write_5m is the short cache lifetime and cache_write_1h is the long one. For OpenAI, they hold the 30-minute (default) and 12-hour write rates.",
+    "OpenAI: the API profiles are in USD. The 'codex-credits/<model>' profiles are Codex credits at Standard speed (Fast mode costs more; see the source)."
+  ],
+  "profiles": {
+    "relative": {
+      "multipliers": {
+        "input": 1,
+        "cache_write_5m": 1.25,
+        "cache_write_1h": 2,
+        "cache_read": 0.1,
+        "output": 5
+      },
+      "source": "Lesson 1.2: the shape of an Anthropic bill",
+      "note": "No prices. Shows where the cost goes, in input-equivalent tokens."
+    },
+    "claude-fable-5-2": {
+      "unit": "USD",
+      "per_mtok": {"input": 8.00, "cache_write_5m": 10.00, "cache_write_1h": 16.00, "cache_read": 0.20, "output": 40.00},
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "checked": "2026-11-14",
+      "note": "Large tier, top of the line. Cache reads are 0.025x input."
+    },
+    "claude-opus-5-5": {
+      "unit": "USD",
+      "per_mtok": {"input": 4.00, "cache_write_5m": 5.00, "cache_write_1h": 8.00, "cache_read": 0.20, "output": 20.00},
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "checked": "2026-11-14",
+      "note": "Large tier. The Claude Code default. Cache reads are 0.05x input."
+    },
+    "claude-sonnet-5-5": {
+      "unit": "USD",
+      "per_mtok": {"input": 2.00, "cache_write_5m": 2.50, "cache_write_1h": 4.00, "cache_read": 0.10, "output": 10.00},
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "checked": "2026-11-14",
+      "note": "Workhorse tier. Cache reads are 0.05x input."
+    },
+    "claude-haiku-5-5": {
+      "unit": "USD",
+      "per_mtok": {"input": 0.10, "cache_write_5m": 0.125, "cache_write_1h": 0.20, "cache_read": 0.01, "output": 0.50},
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "checked": "2026-11-14",
+      "note": "Small tier. For prompts of 100,000 tokens or fewer. A longer prompt uses claude-haiku-5-5-over-100k.",
+      "long_prompt": {"over_tokens": 100000, "profile": "claude-haiku-5-5-over-100k"}
+    },
+    "claude-haiku-5-5-over-100k": {
+      "unit": "USD",
+      "per_mtok": {"input": 0.50, "cache_write_5m": 0.625, "cache_write_1h": 1.00, "cache_read": 0.05, "output": 2.50},
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "checked": "2026-11-14",
+      "note": "Small tier, prompts over 100,000 tokens (cache reads and writes count toward the prompt). 5x the short-prompt rates."
+    },
+    "gpt-6-astra": {
+      "unit": "USD",
+      "per_mtok": {"input": 10.00, "cache_write_5m": 12.50, "cache_write_1h": 25.00, "cache_read": 1.00, "output": 50.00},
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "OpenAI API, Standard tier. Large tier. Cache reads are 0.1x input. For prompts of 272,000 tokens or fewer.",
+      "long_prompt": {"over_tokens": 272000, "profile": "gpt-6-astra-over-272k"}
+    },
+    "gpt-6-astra-over-272k": {
+      "unit": "USD",
+      "per_mtok": {"input": 20.00, "cache_write_5m": 25.00, "cache_write_1h": 50.00, "cache_read": 2.00, "output": 75.00},
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "OpenAI API, Standard tier, prompts over 272,000 tokens."
+    },
+    "gpt-6.1-sol": {
+      "unit": "USD",
+      "per_mtok": {"input": 2.00, "cache_write_5m": 2.50, "cache_write_1h": 5.00, "cache_read": 0.10, "output": 10.00},
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "OpenAI API, Standard tier. Workhorse tier, the Codex default. Cache reads are 0.05x input. For prompts of 272,000 tokens or fewer.",
+      "long_prompt": {"over_tokens": 272000, "profile": "gpt-6.1-sol-over-272k"}
+    },
+    "gpt-6.1-sol-over-272k": {
+      "unit": "USD",
+      "per_mtok": {"input": 4.00, "cache_write_5m": 5.00, "cache_write_1h": 10.00, "cache_read": 0.20, "output": 15.00},
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "OpenAI API, Standard tier, prompts over 272,000 tokens."
+    },
+    "gpt-6.1-terra": {
+      "unit": "USD",
+      "per_mtok": {"input": 1.00, "cache_write_5m": 1.25, "cache_write_1h": 2.50, "cache_read": 0.05, "output": 5.00},
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "OpenAI API, Standard tier. Balanced tier. Cache reads are 0.05x input. For prompts of 272,000 tokens or fewer.",
+      "long_prompt": {"over_tokens": 272000, "profile": "gpt-6.1-terra-over-272k"}
+    },
+    "gpt-6.1-terra-over-272k": {
+      "unit": "USD",
+      "per_mtok": {"input": 2.00, "cache_write_5m": 2.50, "cache_write_1h": 5.00, "cache_read": 0.10, "output": 7.50},
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "OpenAI API, Standard tier, prompts over 272,000 tokens."
+    },
+    "gpt-6-luna": {
+      "unit": "USD",
+      "per_mtok": {"input": 0.10, "cache_write_5m": 0.125, "cache_write_1h": 0.25, "cache_read": 0.01, "output": 0.50},
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "OpenAI API, Standard tier. Small tier. Cache reads are 0.1x input. For prompts of 272,000 tokens or fewer.",
+      "long_prompt": {"over_tokens": 272000, "profile": "gpt-6-luna-over-272k"}
+    },
+    "gpt-6-luna-over-272k": {
+      "unit": "USD",
+      "per_mtok": {"input": 0.20, "cache_write_5m": 0.25, "cache_write_1h": 0.50, "cache_read": 0.02, "output": 0.75},
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "OpenAI API, Standard tier, prompts over 272,000 tokens."
+    },
+    "codex-credits/gpt-6-astra": {
+      "unit": "credits",
+      "per_mtok": {"input": 250, "cache_write_5m": 250, "cache_write_1h": 250, "cache_read": 25, "output": 1250},
+      "source": "https://learn.chatgpt.com/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "Codex credits, Standard speed. No separate cache-write charge: cache writes use the input rate."
+    },
+    "codex-credits/gpt-6.1-sol": {
+      "unit": "credits",
+      "per_mtok": {"input": 50, "cache_write_5m": 50, "cache_write_1h": 50, "cache_read": 2.5, "output": 250},
+      "source": "https://learn.chatgpt.com/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "Codex credits, Standard speed. No separate cache-write charge: cache writes use the input rate."
+    },
+    "codex-credits/gpt-6.1-terra": {
+      "unit": "credits",
+      "per_mtok": {"input": 25, "cache_write_5m": 25, "cache_write_1h": 25, "cache_read": 1.25, "output": 125},
+      "source": "https://learn.chatgpt.com/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "Codex credits, Standard speed. No separate cache-write charge: cache writes use the input rate."
+    },
+    "codex-credits/gpt-6-luna": {
+      "unit": "credits",
+      "per_mtok": {"input": 2.5, "cache_write_5m": 2.5, "cache_write_1h": 2.5, "cache_read": 0.25, "output": 12.5},
+      "source": "https://learn.chatgpt.com/docs/pricing",
+      "checked": "2026-11-15",
+      "note": "Codex credits, Standard speed. No separate cache-write charge: cache writes use the input rate."
+    }
+  }
+}

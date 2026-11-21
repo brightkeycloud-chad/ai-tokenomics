@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "run_id": "20261116-221840-app-post-incident-claude",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "app-post-incident",
+    "tool": "claude",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "workload": "status-board-app",
+    "workload_tree": "d38981bbdc85",
+    "prompt_sha": "a0e49c99b43c",
+    "config": "0af40a62a105"
+  },
+  "agent": {
+    "exit_code": 0,
+    "timed_out": false,
+    "wall_seconds": 18.5
+  },
+  "changed": [
+    "app/main.py",
+    "app/models.py",
+    "tests/test_api.py"
+  ],
+  "checks": {
+    "acceptance": [
+      {
+        "rule": "pytest",
+        "ok": true,
+        "failed": []
+      }
+    ],
+    "rules": [
+      {
+        "rule": "1 validate in validators.py",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "2 DynamoDB only through store.py",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "3 return a model",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "4 test every route",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "5 /healthz free of dependencies",
+        "ok": true,
+        "failed": []
+      }
+    ]
+  },
+  "row": {
+    "run_id": "20261116-221840-app-post-incident-claude",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "app-post-incident",
+    "tool": "claude",
+    "tool_version": "2.1.326",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "workload_tree": "d38981bbdc85",
+    "prompt_sha": "a0e49c99b43c",
+    "variant": "",
+    "config": "0af40a62a105",
+    "tests_pass": "yes",
+    "rules_followed": "yes",
+    "manual_fixes": 0,
+    "input": 8,
+    "cache_write": 16419,
+    "cache_read": 71462,
+    "output": 2585,
+    "reasoning": "",
+    "context_peak": 25081,
+    "cache_hit": 0.813,
+    "cost_list_usd": 0.0987,
+    "cost_credits": "",
+    "vendor_estimate_usd": 0.0987,
+    "window_5h_pct": "",
+    "wall_seconds": 18.5,
+    "api_seconds": 15.4,
+    "your_seconds": 0,
+    "rules_broken": "",
+    "notes": ""
+  }
+}

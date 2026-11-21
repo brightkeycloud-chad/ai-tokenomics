@@ -1,0 +1,72 @@
+{
+  "title": "app-post-incident: measured setups",
+  "note": "Measured: median list-price cost of one run and the pass rate, from sample-runs/results-log.csv (runs to 2026-11-16). List-price dollars, not what a subscription pays.",
+  "currency": "USD",
+  "hourly_rate": 90.0,
+  "defaults": {
+    "rework_minutes": 10.0,
+    "wait_minutes": 0
+  },
+  "options": [
+    {
+      "name": "claude-haiku-5-5 · medium",
+      "token_cost": 0.0097,
+      "success_rate": "3/3",
+      "runs": 3
+    },
+    {
+      "name": "claude-sonnet-5-5 · medium (baseline)",
+      "token_cost": 0.1014,
+      "success_rate": "3/3",
+      "runs": 3
+    },
+    {
+      "name": "claude-opus-5-5 · medium",
+      "token_cost": 0.2051,
+      "success_rate": "3/3",
+      "runs": 3
+    },
+    {
+      "name": "claude-sonnet-5-5 · low",
+      "token_cost": 0.0997,
+      "success_rate": "3/3",
+      "runs": 3
+    },
+    {
+      "name": "claude-sonnet-5-5 · high",
+      "token_cost": 0.1181,
+      "success_rate": "3/3",
+      "runs": 3
+    },
+    {
+      "name": "gpt-6-luna · medium",
+      "token_cost": 0.003,
+      "success_rate": "3/3",
+      "runs": 3
+    },
+    {
+      "name": "gpt-6.1-sol · medium (baseline)",
+      "token_cost": 0.0656,
+      "success_rate": "5/5",
+      "runs": 5
+    },
+    {
+      "name": "gpt-6-astra · medium",
+      "token_cost": 0.2876,
+      "success_rate": "3/3",
+      "runs": 3
+    },
+    {
+      "name": "gpt-6.1-sol · low",
+      "token_cost": 0.0593,
+      "success_rate": "3/3",
+      "runs": 3
+    },
+    {
+      "name": "gpt-6.1-sol · high",
+      "token_cost": 0.0827,
+      "success_rate": "3/3",
+      "runs": 3
+    }
+  ]
+}

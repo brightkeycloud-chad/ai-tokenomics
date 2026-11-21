@@ -1,0 +1,118 @@
+name: destroy
+
+# Tears the stack down after a rehearsal or a delivery. Manual only, and it
+# refuses to run unless the confirmation field is typed exactly.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "destroy" to confirm. Anything else stops the run.'
+        required: true
+        default: ""
+
+concurrency:
+  group: terraform-${{ github.ref }}
+  cancel-in-progress: false
+
+# Account-specific values come from repository variables, which
+# setup/configure-repos.sh in the course repository sets from the bootstrap
+# outputs. The role ARN is not a secret. The trust policy on the role is what
+# limits it to this repository, on main or a pull request.
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+  TF_STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
+  NAME_PREFIX: ${{ vars.NAME_PREFIX || 'tokenomics-status-board' }}
+  TF_VAR_repo_name: ${{ github.event.repository.name }}
+  TF_IN_AUTOMATION: "true"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+        # bash -eo pipefail. The runner default omits pipefail, which let a
+        # failing `terraform plan | tee` report success.
+        shell: bash
+
+    steps:
+      - name: Check the confirmation
+        if: inputs.confirm != 'destroy'
+        run: |
+          echo "Confirmation field said '${{ inputs.confirm }}', expected 'destroy'." >&2
+          exit 1
+
+      - uses: actions/checkout@v7
+
+      - name: Check the repository variables
+        env:
+          ENV_NAME: ${{ vars.ENV_NAME }}
+          HOSTED_ZONE_NAME: ${{ vars.HOSTED_ZONE_NAME }}
+          SUBDOMAIN: ${{ vars.SUBDOMAIN }}
+          CERTIFICATE_DOMAIN: ${{ vars.CERTIFICATE_DOMAIN }}
+        run: |
+          missing=0
+          for name in AWS_ROLE_ARN TF_STATE_BUCKET; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the course repository."
+              missing=1
+            fi
+          done
+          if [ "$missing" != 0 ]; then exit 1; fi
+
+          # Pass only the variables that are set. Terraform keeps its own
+          # default for the rest, so an empty variable cannot blank a value.
+          pass() {
+            if [ -n "$2" ]; then
+              echo "TF_VAR_$1=$2" >> "$GITHUB_ENV"
+              echo "TF_VAR_$1=$2"
+            fi
+          }
+          pass env "$ENV_NAME"
+          pass hosted_zone_name "$HOSTED_ZONE_NAME"
+          pass subdomain "$SUBDOMAIN"
+          pass certificate_domain "$CERTIFICATE_DOMAIN"
+
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      - name: Assume the deployment role
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: gha-destroy-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Init
+        run: |
+          terraform init -input=false \
+            -backend-config="bucket=${TF_STATE_BUCKET}" \
+            -backend-config="region=${AWS_REGION}"
+
+      - name: Destroy
+        run: terraform destroy -input=false -no-color -auto-approve
+
+      # The state bucket and the bootstrap roles are deliberately left alone.
+      # Removing those is a separate, deliberate act, documented in the README.
+      - name: Confirm nothing was left behind
+        run: |
+          {
+            echo "### Remaining resources"
+            echo '```'
+            echo "ECS clusters:"
+            aws ecs list-clusters --query "clusterArns[?contains(@,'${NAME_PREFIX}')]" --output text
+            echo "Load balancers:"
+            aws elbv2 describe-load-balancers \
+              --query "LoadBalancers[?contains(LoadBalancerName,'${NAME_PREFIX}')].LoadBalancerName" --output text
+            echo "NAT gateways:"
+            aws ec2 describe-nat-gateways \
+              --filter Name=state,Values=available,pending "Name=tag:Name,Values=${NAME_PREFIX}*" \
+              --query "NatGateways[].NatGatewayId" --output text
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "cloudwatch": {
+      "command": "uvx",
+      "args": ["awslabs.cloudwatch-mcp-server@0.3.1"],
+      "env": {
+        "AWS_PROFILE": "tokenomics-agent",
+        "AWS_REGION": "us-east-1",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    }
+  }
+}

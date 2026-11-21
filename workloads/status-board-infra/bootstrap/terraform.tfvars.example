@@ -1,0 +1,27 @@
+# Copy to terraform.tfvars and fill in. setup/publish-workloads.sh in the course
+# repository writes this file for you. terraform.tfvars is not committed.
+#
+# Find the numeric ids with:
+#   gh api /users/<owner> --jq .id
+#   gh api /repos/<owner>/<repo> --jq .id
+
+github_owner    = "your-github-user"
+github_owner_id = 12345678
+
+infra_repo    = "tokenomics-status-board-infra"
+infra_repo_id = 123456789
+
+app_repo    = "tokenomics-status-board-app"
+app_repo_id = 123456789
+
+# A public Route 53 hosted zone in your account. ../terraform must use the same value.
+hosted_zone_name = "awsf.brightkey.cloud"
+
+# What GitHub puts at the start of the OIDC subject claim for each repository:
+#   gh api repos/<owner>/<repo>/actions/oidc/customization/sub --jq .sub_claim_prefix
+# Leave empty to use repo:<owner>@<owner_id>/<repo>@<repo_id>.
+infra_oidc_subject_prefix = ""
+app_oidc_subject_prefix   = ""
+
+# Set false if the account already has a GitHub Actions OIDC provider.
+create_github_oidc_provider = true

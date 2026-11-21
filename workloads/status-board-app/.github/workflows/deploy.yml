@@ -1,0 +1,228 @@
+name: deploy
+
+# Tests on every pull request. On main, also builds the image, publishes it to
+# ECR and rolls the ECS service onto it. Credentials come from the GitHub OIDC
+# provider, so no access key is stored in this repository.
+on:
+  pull_request:
+  push:
+    branches: [main]
+    # A change to documentation only does not deploy.
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+# bash -eo pipefail. The runner default omits pipefail, which lets a failing
+# command in a pipeline report success.
+defaults:
+  run:
+    shell: bash
+
+# Account-specific values come from repository variables, which
+# setup/configure-repos.sh in the course repository sets from the bootstrap
+# outputs. The role ARN is not a secret. The trust policy on the role is what
+# limits it to this repository, on main or a pull request. The ECR repository,
+# the cluster, the service and the task family all share the name prefix.
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+  NAME_PREFIX: ${{ vars.NAME_PREFIX || 'tokenomics-status-board' }}
+  BOARD_URL: ${{ vars.BOARD_URL }}
+  CONTAINER_NAME: app
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Run the tests
+        # The suite mocks DynamoDB, so it needs no AWS account and no network.
+        run: python -m pytest -q
+
+  deploy:
+    needs: test
+    if: github.event_name != 'pull_request'
+    # The task runs on Graviton, so build on Graviton. Native arm64 means no
+    # emulation layer. The test job stays on x86, which keeps the suite covered
+    # on both architectures.
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Check the repository variables
+        run: |
+          missing=0
+          for name in AWS_ROLE_ARN BOARD_URL; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the course repository."
+              missing=1
+            fi
+          done
+          if [ "$missing" != 0 ]; then exit 1; fi
+
+      - name: Assume the deployment role
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: gha-deploy-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Build and publish the image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/arm64
+          push: true
+          # Tagged by commit so every deployment is traceable, and as latest so
+          # that a fresh terraform apply has a working image to start from.
+          tags: |
+            ${{ steps.ecr.outputs.registry }}/${{ env.NAME_PREFIX }}:${{ github.sha }}
+            ${{ steps.ecr.outputs.registry }}/${{ env.NAME_PREFIX }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # describe-task-definition returns fields that register-task-definition
+      # rejects, so strip them before rendering.
+      - name: Fetch the current task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition "${{ env.NAME_PREFIX }}" \
+            --query taskDefinition \
+            | jq 'del(
+                .taskDefinitionArn,
+                .revision,
+                .status,
+                .requiresAttributes,
+                .compatibilities,
+                .registeredAt,
+                .registeredBy,
+                .deregisteredAt
+              )' > task-definition.json
+
+      - name: Point the task definition at the new image
+        id: render
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.ecr.outputs.registry }}/${{ env.NAME_PREFIX }}:${{ github.sha }}
+
+      - name: Roll the service onto it
+        id: deploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render.outputs.task-definition }}
+          cluster: ${{ env.NAME_PREFIX }}
+          service: ${{ env.NAME_PREFIX }}
+          # The action's own waiter polls every 15 seconds and was measured
+          # idling for 1m17s after ECS had already reached steady state. The
+          # step below waits on the same condition, five seconds at a time.
+          wait-for-service-stability: false
+
+      - name: Wait for the service to stabilise
+        env:
+          WANT_TASK_DEF: ${{ steps.deploy.outputs.task-definition-arn }}
+        run: |
+          # The same condition the AWS waiter uses: one deployment left, and
+          # the running count matching the desired count. The task definition
+          # check stops a stale "already stable" reading being accepted in the
+          # moment before ECS registers the new deployment.
+          for attempt in $(seq 1 120); do
+            read -r count running desired primary <<<"$(
+              aws ecs describe-services \
+                --cluster "${{ env.NAME_PREFIX }}" \
+                --services "${{ env.NAME_PREFIX }}" \
+                --query 'services[0].[length(deployments), runningCount, desiredCount, deployments[?status==`PRIMARY`].taskDefinition | [0]]' \
+                --output text
+            )"
+
+            if [ "$primary" = "$WANT_TASK_DEF" ] \
+               && [ "$count" = "1" ] \
+               && [ "$running" = "$desired" ]; then
+              echo "stable after ${attempt} poll(s), $(( attempt * 5 ))s"
+              exit 0
+            fi
+
+            echo "poll ${attempt}: deployments=${count} running=${running}/${desired}"
+            sleep 5
+          done
+
+          echo "service did not stabilise within 10 minutes" >&2
+          aws ecs describe-services \
+            --cluster "${{ env.NAME_PREFIX }}" --services "${{ env.NAME_PREFIX }}" \
+            --query 'services[0].events[:5].message' --output text >&2
+          exit 1
+
+      # Loads the sample services so a rebuilt environment always comes up
+      # showing the same board. Safe to repeat: services are rewritten and
+      # incidents already present are skipped.
+      - name: Seed the board
+        env:
+          SERVICES_TABLE: ${{ env.NAME_PREFIX }}-services
+          INCIDENTS_TABLE: ${{ env.NAME_PREFIX }}-incidents
+        run: |
+          pip install --quiet -r requirements.txt
+          python -m scripts.seed
+
+      - name: Confirm the board answers
+        run: |
+          URL="${BOARD_URL%/}"
+
+          for attempt in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$URL/healthz" || true)
+            if [ "$code" = "200" ]; then
+              echo "healthy after ${attempt} attempt(s)"
+              break
+            fi
+            if [ "$attempt" = "30" ]; then
+              echo "board did not return 200 from $URL/healthz" >&2
+              exit 1
+            fi
+            sleep 10
+          done
+
+          # A 200 from /healthz only proves the process is up. Check the board
+          # is actually serving its services before calling this a success.
+          count=$(curl -s "$URL/api/services" | python -c 'import json,sys; print(len(json.load(sys.stdin)))')
+          echo "services on the board: ${count}"
+          if [ "$count" -lt 4 ]; then
+            echo "expected at least 4 services, got ${count}" >&2
+            exit 1
+          fi
+
+          {
+            echo "### Deployed"
+            echo "- image: \`${{ github.sha }}\`"
+            echo "- board: $URL"
+            echo "- services: ${count}"
+          } >> "$GITHUB_STEP_SUMMARY"

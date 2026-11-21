@@ -1,0 +1,12 @@
+{
+  "title": "Status Board infra: add a 5xx alarm with notification (multi-file Terraform)",
+  "note": "Hypothetical numbers. Lesson 3 replaces them with measured runs of the baseline task.",
+  "currency": "USD",
+  "hourly_rate": 90,
+  "defaults": {"rework_minutes": 30, "wait_minutes": 0},
+  "options": [
+    {"name": "Small tier",     "token_cost": 0.20, "success_rate": "30%"},
+    {"name": "Workhorse tier", "token_cost": 1.50, "success_rate": "70%"},
+    {"name": "Large tier",     "token_cost": 3.00, "success_rate": "90%"}
+  ]
+}

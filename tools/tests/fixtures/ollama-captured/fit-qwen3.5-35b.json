@@ -1,0 +1,18 @@
+{
+  "model": "qwen3.5:35b",
+  "context_setting": 65536,
+  "gpu_gib": 37.4,
+  "gpu_name": "Apple M4 Pro",
+  "default_context": 32768,
+  "memory_gib": 48.0,
+  "family": "qwen3_5_moe",
+  "quantization": "nvfp4",
+  "parameters": 35106839040,
+  "capabilities": [
+    "completion",
+    "vision",
+    "thinking",
+    "tools"
+  ],
+  "file_bytes": 21909194238
+}

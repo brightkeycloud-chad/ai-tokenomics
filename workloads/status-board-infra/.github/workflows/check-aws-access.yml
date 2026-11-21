@@ -1,0 +1,95 @@
+name: check-aws-access
+
+# Diagnoses the connection from GitHub Actions to AWS without changing
+# anything. It shows the OIDC subject claim the role must accept, assumes the
+# deployment role, and runs a read-only Terraform plan against the real state.
+# Run it after setup, or when a workflow fails with AccessDenied.
+on:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+  TF_STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
+  TF_VAR_repo_name: ${{ github.event.repository.name }}
+  TF_IN_AUTOMATION: "true"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Show the OIDC subject claim
+        working-directory: .
+        run: |
+          # Request a token and print only its subject. The token itself is
+          # never printed.
+          token=$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
+          sub=$(cut -d. -f2 <<<"$token" | tr '_-' '/+' | base64 -d 2>/dev/null | jq -r .sub || true)
+          echo "subject claim: $sub"
+          echo "The role trust policy must accept this value. Compare it with the"
+          echo "oidc_subjects output of the bootstrap layer."
+          echo "### OIDC subject claim" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`$sub\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check the repository variables
+        working-directory: .
+        env:
+          ENV_NAME: ${{ vars.ENV_NAME }}
+          HOSTED_ZONE_NAME: ${{ vars.HOSTED_ZONE_NAME }}
+          SUBDOMAIN: ${{ vars.SUBDOMAIN }}
+          CERTIFICATE_DOMAIN: ${{ vars.CERTIFICATE_DOMAIN }}
+        run: |
+          missing=0
+          for name in AWS_ROLE_ARN TF_STATE_BUCKET; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Repository variable ${name} is not set. Run setup/configure-repos.sh in the course repository."
+              missing=1
+            fi
+          done
+          if [ "$missing" != 0 ]; then exit 1; fi
+          pass() {
+            if [ -n "$2" ]; then
+              echo "TF_VAR_$1=$2" >> "$GITHUB_ENV"
+            fi
+          }
+          pass env "$ENV_NAME"
+          pass hosted_zone_name "$HOSTED_ZONE_NAME"
+          pass subdomain "$SUBDOMAIN"
+          pass certificate_domain "$CERTIFICATE_DOMAIN"
+
+      - name: Assume the deployment role
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: gha-check-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Show the assumed identity
+        run: aws sts get-caller-identity
+
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_wrapper: false
+
+      # Reads the state, the hosted zone and the certificate. Changes nothing:
+      # no apply, and no state lock is taken.
+      - name: Read-only plan
+        run: |
+          terraform init -input=false \
+            -backend-config="bucket=${TF_STATE_BUCKET}" \
+            -backend-config="region=${AWS_REGION}"
+          terraform plan -input=false -no-color -lock=false > plan.txt
+          grep -E '^(Plan:|No changes)' plan.txt
+          grep -E '^(Plan:|No changes)' plan.txt >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,19 @@
+{
+  "title": "Model tier at medium effort, and effort on the workhorse baseline",
+  "tasks": ["app-post-incident", "infra-5xx-alarm"],
+  "repetitions": 3,
+  "hourly_rate": 90,
+  "rework_minutes": {"app-post-incident": 10, "infra-5xx-alarm": 30},
+  "setups": [
+    {"tool": "claude", "model": "claude-haiku-5-5",  "effort": "medium", "label": "Small"},
+    {"tool": "claude", "model": "claude-sonnet-5-5", "effort": "medium", "label": "Workhorse", "baseline": true},
+    {"tool": "claude", "model": "claude-opus-5-5",   "effort": "medium", "label": "Large"},
+    {"tool": "claude", "model": "claude-sonnet-5-5", "effort": "low",    "label": "Workhorse, low effort"},
+    {"tool": "claude", "model": "claude-sonnet-5-5", "effort": "high",   "label": "Workhorse, high effort"},
+    {"tool": "codex",  "model": "gpt-6-luna",        "effort": "medium", "label": "Small"},
+    {"tool": "codex",  "model": "gpt-6.1-sol",       "effort": "medium", "label": "Workhorse", "baseline": true},
+    {"tool": "codex",  "model": "gpt-6-astra",       "effort": "medium", "label": "Large"},
+    {"tool": "codex",  "model": "gpt-6.1-sol",       "effort": "low",    "label": "Workhorse, low effort"},
+    {"tool": "codex",  "model": "gpt-6.1-sol",       "effort": "high",   "label": "Workhorse, high effort"}
+  ]
+}

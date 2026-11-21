@@ -1,0 +1,5 @@
+{
+  "name": "verbose-tests",
+  "title": "A table-driven test module (102 cases), a pytest.ini with -v -rA (a full test report of about 25 KB), and an AGENTS.md test rule: run the full suite as its own command after the edits, with no tail or head. The application code and the house rules are not changed.",
+  "workload": "status-board-app"
+}

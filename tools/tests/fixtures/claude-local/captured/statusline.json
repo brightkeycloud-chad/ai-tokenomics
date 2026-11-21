@@ -1,0 +1,56 @@
+{
+  "session_id": "b236b357-70da-4d34-8135-054db282855a",
+  "prompt_id": "6bd8d6f4-0172-44fb-a363-a7f9928294ad",
+  "effort": {
+    "level": "xhigh"
+  },
+  "model": {
+    "id": "qwen3.5:35b",
+    "display_name": "qwen3.5:35b"
+  },
+  "version": "2.1.326",
+  "output_style": {
+    "name": "default"
+  },
+  "cost": {
+    "total_cost_usd": 0.17535150000000002,
+    "total_duration_ms": 104950,
+    "total_api_duration_ms": 70232,
+    "total_lines_added": 0,
+    "total_lines_removed": 0
+  },
+  "context_window": {
+    "total_input_tokens": 25055,
+    "total_output_tokens": 47,
+    "context_window_size": 65536,
+    "current_usage": {
+      "input_tokens": 867,
+      "output_tokens": 47,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 24188
+    },
+    "used_percentage": 38,
+    "remaining_percentage": 62
+  },
+  "exceeds_200k_tokens": false,
+  "prompt_cache": {
+    "warm": true,
+    "caching_observed": true,
+    "ttl": "5m",
+    "expires_at": 1794954938,
+    "requests": 2,
+    "misses": 0,
+    "expected_rebuilds": 0,
+    "hit_ratio": 0.49188595599300444,
+    "cache_write_tokens": 0,
+    "miss_recache_tokens": 0,
+    "last_miss_at": null,
+    "last_miss_cause": null,
+    "miss_causes": {},
+    "recache_tokens_if_cold": 25055
+  },
+  "fast_mode": false,
+  "thinking": {
+    "enabled": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "model": "qwen3.5:35b",
+  "think": "on",
+  "runs": [
+    {
+      "load_s": 8.935449417,
+      "prompt_tokens": 2035,
+      "new_tokens": 2035,
+      "read_s": 2.006244083,
+      "read_tps": 1014.3332096247235,
+      "cached_tokens": 0,
+      "written_tokens": 60,
+      "write_s": 0.850134167,
+      "write_tps": 70.57709515632254,
+      "first_token_s": 10.975520584004698,
+      "first_answer_s": null,
+      "total_s": 11.813359375
+    },
+    {
+      "load_s": 0.004212209,
+      "prompt_tokens": 2035,
+      "new_tokens": 4,
+      "read_s": 0.018847791,
+      "read_tps": 212.22646197636635,
+      "cached_tokens": 2031,
+      "written_tokens": 60,
+      "write_s": 0.854760333,
+      "write_tps": 70.19511514931285,
+      "first_token_s": 0.050822708988562226,
+      "first_answer_s": null,
+      "total_s": 0.890108375
+    }
+  ]
+}

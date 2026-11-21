@@ -1,0 +1,5 @@
+{
+  "name": "cloudwatch-logs",
+  "version": "1.0.0",
+  "description": "Find the cause of Status Board 5xx errors: the cloudwatch-5xx skill and the AWS CloudWatch MCP server, in one package."
+}

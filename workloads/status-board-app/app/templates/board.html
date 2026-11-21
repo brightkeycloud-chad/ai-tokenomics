@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service Status Board</title>
+  <link rel="stylesheet" href="/static/board.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>Service Status</h1>
+    <p class="subtitle">Live health of our production services.</p>
+  </header>
+
+  <main class="board">
+    {% for service in services %}
+    <article class="tile">
+      <h2 class="tile-name">{{ service.name }}</h2>
+      <p class="tile-id">{{ service.service_id }}</p>
+
+      {# Each status the board supports needs a branch here. A status that is #}
+      {# not listed renders no badge at all, which looks like a blank tile.    #}
+      {% if service.status == "operational" %}
+        <span class="badge badge-operational">Operational</span>
+      {% elif service.status == "degraded" %}
+        <span class="badge badge-degraded">Degraded</span>
+      {% elif service.status == "down" %}
+        <span class="badge badge-down">Down</span>
+      {% endif %}
+
+      <p class="tile-updated">Updated {{ service.updated_at }}</p>
+    </article>
+    {% else %}
+    <p class="empty">No services are registered on this board yet.</p>
+    {% endfor %}
+  </main>
+</body>
+</html>

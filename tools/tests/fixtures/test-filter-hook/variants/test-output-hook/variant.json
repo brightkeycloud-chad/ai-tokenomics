@@ -1,0 +1,6 @@
+{
+  "name": "test-output-hook",
+  "title": "The verbose-tests variant, plus a PreToolUse hook in the project settings that keeps only the failures, the error lines, and the summary line of a pytest run.",
+  "workload": "status-board-app",
+  "extends": "../verbose-tests"
+}

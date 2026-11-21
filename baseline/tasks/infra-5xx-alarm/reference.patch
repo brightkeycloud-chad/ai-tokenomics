@@ -1,0 +1,54 @@
+diff --git a/terraform/alarms.tf b/terraform/alarms.tf
+new file mode 100644
+index 0000000..4297109
+--- /dev/null
++++ b/terraform/alarms.tf
+@@ -0,0 +1,48 @@
++# Reference solution for the infra-5xx-alarm baseline task. The harness applies
++# it when you give --tool reference, to check the harness and the hidden tests
++# with no model request.
++
++variable "alb_5xx_threshold" {
++  description = "Number of load balancer 5xx responses in one minute that starts the alarm."
++  type        = number
++  default     = 5
++
++  validation {
++    condition     = var.alb_5xx_threshold >= 1 && floor(var.alb_5xx_threshold) == var.alb_5xx_threshold
++    error_message = "alb_5xx_threshold must be a whole number of 1 or more."
++  }
++}
++
++resource "aws_sns_topic" "alarms" {
++  name = "${local.name}-alarms"
++
++  tags = { Name = "${local.name}-alarms" }
++}
++
++resource "aws_cloudwatch_metric_alarm" "alb_5xx" {
++  alarm_name        = "${local.name}-alb-5xx"
++  alarm_description = "The load balancer returned 5xx responses."
++
++  namespace   = "AWS/ApplicationELB"
++  metric_name = "HTTPCode_ELB_5XX_Count"
++  dimensions = {
++    LoadBalancer = aws_lb.this.arn_suffix
++  }
++
++  statistic           = "Sum"
++  period              = 60
++  evaluation_periods  = 1
++  comparison_operator = "GreaterThanOrEqualToThreshold"
++  threshold           = var.alb_5xx_threshold
++  treat_missing_data  = "notBreaching"
++
++  alarm_actions = [aws_sns_topic.alarms.arn]
++  ok_actions    = [aws_sns_topic.alarms.arn]
++
++  tags = { Name = "${local.name}-alb-5xx" }
++}
++
++output "alarm_topic_arn" {
++  description = "SNS topic that receives the load balancer 5xx alarm."
++  value       = aws_sns_topic.alarms.arn
++}

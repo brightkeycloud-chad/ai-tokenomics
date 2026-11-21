@@ -1,0 +1,54 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "TodoWrite",
+      "Bash(python3:*)",
+      "Bash(./venv/bin/python:*)",
+      "Bash(./venv/bin/python -m pytest:*)",
+      "Bash(venv/bin/python -m pytest:*)",
+      "Bash(./venv/bin/pytest:*)",
+      "Bash(terraform fmt:*)",
+      "Bash(terraform validate:*)",
+      "Bash(terraform test:*)",
+      "Bash(terraform -chdir=terraform fmt:*)",
+      "Bash(terraform -chdir=terraform validate:*)",
+      "Bash(terraform -chdir=terraform test:*)",
+      "Bash(cd:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)"
+    ],
+    "deny": [
+      "Bash(terraform init:*)",
+      "Bash(terraform plan:*)",
+      "Bash(terraform apply:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(pip:*)",
+      "Bash(./venv/bin/pip:*)",
+      "WebFetch",
+      "WebSearch",
+      "Bash(python3 -m pip:*)",
+      "Bash(python -m pip:*)",
+      "Bash(./venv/bin/python -m pip:*)",
+      "Bash(venv/bin/python -m pip:*)",
+      "Bash(aws:*)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "failIfUnavailable": true,
+    "network": {
+      "allowAllUnixSockets": true
+    }
+  }
+}

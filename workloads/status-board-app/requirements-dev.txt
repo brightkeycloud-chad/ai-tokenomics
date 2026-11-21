@@ -1,0 +1,7 @@
+-r requirements.txt
+
+pytest==9.1.1
+httpx==0.28.1
+# moto[server] also provides `python -m moto.server`, a local DynamoDB
+# endpoint for running the application without Docker.
+moto[dynamodb,server]==5.2.3

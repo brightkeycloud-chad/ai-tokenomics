@@ -1,0 +1,11 @@
+{
+  "title": "Lean and bloated AGENTS.md on the app task, Claude Code baseline setup",
+  "tasks": ["app-post-incident"],
+  "repetitions": 3,
+  "hourly_rate": 90,
+  "rework_minutes": {"app-post-incident": 10},
+  "setups": [
+    {"tool": "claude", "model": "claude-sonnet-5-5", "effort": "medium", "label": "Lean AGENTS.md", "baseline": true},
+    {"tool": "claude", "model": "claude-sonnet-5-5", "effort": "medium", "label": "Bloated AGENTS.md", "variant": "variants/bloated-agents-md"}
+  ]
+}

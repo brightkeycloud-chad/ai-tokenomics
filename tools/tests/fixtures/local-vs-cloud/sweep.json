@@ -1,0 +1,13 @@
+{
+  "title": "The baseline, cloud and local",
+  "tasks": ["app-post-incident", "infra-5xx-alarm"],
+  "repetitions": 3,
+  "hourly_rate": 90,
+  "rework_minutes": {"app-post-incident": 10, "infra-5xx-alarm": 30},
+  "setups": [
+    {"tool": "claude", "model": "claude-sonnet-5-5", "effort": "medium", "label": "Claude Code, cloud", "baseline": true},
+    {"tool": "claude", "model": "qwen3.5:35b",       "effort": "medium", "label": "Claude Code, local"},
+    {"tool": "codex",  "model": "gpt-6.1-sol",       "effort": "medium", "label": "Codex, cloud", "baseline": true},
+    {"tool": "codex",  "model": "qwen3.5:35b",       "effort": "high",   "label": "Codex, local"}
+  ]
+}

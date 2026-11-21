@@ -1,0 +1,6 @@
+{
+  "name": "mcp-server",
+  "title": "An AWS CloudWatch MCP server (awslabs.cloudwatch-mcp-server through uvx), loaded with --mcp-config",
+  "workload": "status-board-app",
+  "claude_args": ["--mcp-config", "{copy}/.mcp.json"]
+}

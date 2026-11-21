@@ -1,0 +1,17 @@
+{
+  "_about": "The local model for demos 6.3, 6.4, 6.5, and 7.1. Demo 6.3 measured these values. See the Decisions table in DEMO-PLAN.md.",
+  "model": "qwen3.5:35b",
+  "think": true,
+  "context_length": 65536,
+  "fallback": {
+    "model": "gpt-oss:20b",
+    "think": "medium"
+  },
+  "fast_enough": {
+    "prompt_tokens": 20000,
+    "max_first_token_s": 90,
+    "min_write_tps": 15
+  },
+  "measured_on": "Apple M4 Pro, 48 GB, Ollama 0.40.16, default GPU memory limit",
+  "checked": "2026-11-17"
+}

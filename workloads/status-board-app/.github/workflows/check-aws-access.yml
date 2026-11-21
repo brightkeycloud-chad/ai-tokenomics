@@ -1,0 +1,66 @@
+name: check-aws-access
+
+# Diagnoses the connection from GitHub Actions to AWS without changing
+# anything. It shows the OIDC subject claim the role must accept, assumes the
+# deployment role, and makes read-only calls the deployment needs.
+# Run it after setup, or when the deploy workflow fails with AccessDenied.
+on:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+  NAME_PREFIX: ${{ vars.NAME_PREFIX || 'tokenomics-status-board' }}
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show the OIDC subject claim
+        run: |
+          # Request a token and print only its subject. The token itself is
+          # never printed.
+          token=$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
+          sub=$(cut -d. -f2 <<<"$token" | tr '_-' '/+' | base64 -d 2>/dev/null | jq -r .sub || true)
+          echo "subject claim: $sub"
+          echo "The role trust policy must accept this value. Compare it with the"
+          echo "oidc_subjects output of the bootstrap layer."
+          echo "### OIDC subject claim" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`$sub\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check the repository variables
+        run: |
+          if [ -z "$AWS_ROLE_ARN" ]; then
+            echo "::error::Repository variable AWS_ROLE_ARN is not set. Run setup/configure-repos.sh in the course repository."
+            exit 1
+          fi
+
+      - name: Assume the deployment role
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: gha-check-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Show the assumed identity
+        run: aws sts get-caller-identity
+
+      - name: Check ECR access
+        run: |
+          # Proves the role policy allows the ECR login the deploy job needs.
+          aws ecr get-login-password > /dev/null && echo "ECR login: allowed"
+          # The repository exists only while the stack is up.
+          if aws ecr describe-repositories --repository-names "$NAME_PREFIX" > /dev/null 2>&1; then
+            echo "ECR repository $NAME_PREFIX: found"
+          else
+            echo "ECR repository $NAME_PREFIX: not found (expected when the stack is down)"
+          fi

@@ -1,0 +1,89 @@
+diff --git a/app/main.py b/app/main.py
+index 5ef71ca..fe98cc6 100644
+--- a/app/main.py
++++ b/app/main.py
+@@ -15,8 +15,8 @@ from fastapi.staticfiles import StaticFiles
+ from fastapi.templating import Jinja2Templates
+ 
+ from . import store
+-from .models import HealthResponse, Incident, Service, ServiceDetail
+-from .validators import check_service_id
++from .models import HealthResponse, Incident, IncidentCreate, Service, ServiceDetail
++from .validators import check_message, check_service_id, check_status
+ 
+ logging.basicConfig(
+     level=os.environ.get("LOG_LEVEL", "INFO"),
+@@ -75,6 +75,30 @@ def api_get_service(service_id: str) -> ServiceDetail:
+     )
+ 
+ 
++@app.post(
++    "/api/services/{service_id}/incidents",
++    response_model=Incident,
++    status_code=201,
++    tags=["services"],
++)
++def api_create_incident(service_id: str, body: IncidentCreate) -> Incident:
++    """Record an incident against a service and return it."""
++    try:
++        clean_id = check_service_id(service_id)
++        status = check_status(body.status)
++        message = check_message(body.message)
++    except ValueError as error:
++        logger.warning("rejected incident: %s", error)
++        raise HTTPException(status_code=400, detail=str(error)) from error
++
++    if store.get_service(clean_id) is None:
++        raise HTTPException(
++            status_code=404, detail=f"no service with id {clean_id!r}"
++        )
++
++    return Incident(**store.put_incident(clean_id, status, message))
++
++
+ @app.get("/", response_class=HTMLResponse, tags=["board"])
+ def board(request: Request) -> HTMLResponse:
+     """Render the status board."""
+diff --git a/app/models.py b/app/models.py
+index a24c872..8d6967d 100644
+--- a/app/models.py
++++ b/app/models.py
+@@ -32,6 +32,13 @@ class Incident(BaseModel):
+     created_at: str = Field(examples=["2026-09-17T09:05:00+00:00"])
+ 
+ 
++class IncidentCreate(BaseModel):
++    """Request body that records an incident against a service."""
++
++    status: str = Field(examples=["degraded"])
++    message: str = Field(examples=["Elevated latency on checkout."])
++
++
+ class ServiceDetail(BaseModel):
+     """A service together with its recent incident history."""
+ 
+diff --git a/tests/test_api.py b/tests/test_api.py
+index fe0e6ee..15799b1 100644
+--- a/tests/test_api.py
++++ b/tests/test_api.py
+@@ -57,3 +57,20 @@ def test_board_renders_an_empty_message_with_no_services(client):
+     response = client.get("/")
+     assert response.status_code == 200
+     assert "No services are registered" in response.text
++
++
++def test_post_incident_records_the_incident(client, seeded):
++    response = client.post(
++        "/api/services/checkout-api/incidents",
++        json={"status": "down", "message": "Checkout returns errors."},
++    )
++    assert response.status_code == 201
++    assert response.json()["status"] == "down"
++
++
++def test_post_incident_rejects_an_unknown_status(client, seeded):
++    response = client.post(
++        "/api/services/checkout-api/incidents",
++        json={"status": "on-fire", "message": "Smoke."},
++    )
++    assert response.status_code == 400

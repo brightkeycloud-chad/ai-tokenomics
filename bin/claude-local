@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+"""Start Claude Code on the local Ollama model, for this process only.
+
+    claude-local                     Claude Code on the model in config/local/ollama.json
+    claude-local --fallback          on the fallback model
+    claude-local --show              show the variables and the command; start nothing
+
+Your shell profile and your Claude Code settings do not change. `claude` in
+another terminal still uses your subscription. See tools/tokenomics/local.py.
+"""
+import pathlib
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "tools"))
+
+from tokenomics.local import main  # noqa: E402
+
+sys.exit(main())

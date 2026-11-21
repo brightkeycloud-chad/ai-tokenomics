@@ -1,0 +1,30 @@
+{
+  "id": "find-5xx-cause",
+  "title": "Find the cause of the 5xx errors from CloudWatch Logs (demo 5.2)",
+  "workload": "status-board-app",
+  "setup": "none",
+  "prompt": "prompt.md",
+  "claude_settings": "claude-settings.json",
+  "skills": true,
+  "strict_mcp_config": false,
+  "aws_profile": "tokenomics-agent",
+  "acceptance": {
+    "copy": {},
+    "commands": [
+      {
+        "name": "cause found (check-answer.py)",
+        "cwd": ".",
+        "run": [
+          "python3",
+          "{task}/check-answer.py",
+          "{answer}"
+        ]
+      }
+    ]
+  },
+  "rules": {
+    "copy": {},
+    "commands": [],
+    "static": "read-only"
+  }
+}

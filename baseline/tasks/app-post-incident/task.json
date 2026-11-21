@@ -1,0 +1,19 @@
+{
+  "id": "app-post-incident",
+  "title": "Add POST /api/services/{id}/incidents to the application",
+  "workload": "status-board-app",
+  "setup": "python-venv",
+  "prompt": "prompt.md",
+  "reference": "reference.patch",
+  "acceptance": {
+    "copy": {"hidden/test_baseline_acceptance.py": "tests/test_baseline_acceptance.py"},
+    "commands": [
+      {"name": "pytest", "cwd": ".", "run": ["./venv/bin/python", "-m", "pytest", "-q", "-p", "no:cacheprovider"]}
+    ]
+  },
+  "rules": {
+    "copy": {},
+    "commands": [],
+    "static": "app-house-rules"
+  }
+}

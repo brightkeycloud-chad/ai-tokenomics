@@ -1,0 +1,5 @@
+{
+  "name": "skill",
+  "title": "A project skill (.claude/skills/cloudwatch-5xx) that runs read-only aws logs commands",
+  "workload": "status-board-app"
+}

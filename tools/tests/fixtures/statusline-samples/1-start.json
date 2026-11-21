@@ -1,0 +1,47 @@
+{
+  "_sample": "Captured from Claude Code 2.1.325 on 2026-11-15 (claude-haiku-5-5, the demo 2.2 prompt). Paths and the repository owner are changed. Input 1 of 10: the session start, before the first request.",
+  "session_id": "daadf857-7457-4d57-bee2-9e58c058f8d7",
+  "transcript_path": "/home/learner/.claude/projects/-home-learner-tokenomics-tokenomics-status-board-app/daadf857-7457-4d57-bee2-9e58c058f8d7.jsonl",
+  "cwd": "/home/learner/tokenomics/tokenomics-status-board-app",
+  "effort": {
+    "level": "medium"
+  },
+  "model": {
+    "id": "claude-haiku-5-5",
+    "display_name": "Haiku 5.5"
+  },
+  "workspace": {
+    "current_dir": "/home/learner/tokenomics/tokenomics-status-board-app",
+    "project_dir": "/home/learner/tokenomics/tokenomics-status-board-app",
+    "added_dirs": [],
+    "repo": {
+      "host": "github.com",
+      "owner": "<owner>",
+      "name": "tokenomics-status-board-app"
+    }
+  },
+  "version": "2.1.325",
+  "output_style": {
+    "name": "default"
+  },
+  "cost": {
+    "total_cost_usd": 0,
+    "total_duration_ms": 209,
+    "total_api_duration_ms": 0,
+    "total_lines_added": 0,
+    "total_lines_removed": 0
+  },
+  "context_window": {
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "context_window_size": 1000000,
+    "current_usage": null,
+    "used_percentage": null,
+    "remaining_percentage": null
+  },
+  "exceeds_200k_tokens": false,
+  "fast_mode": false,
+  "thinking": {
+    "enabled": true
+  }
+}

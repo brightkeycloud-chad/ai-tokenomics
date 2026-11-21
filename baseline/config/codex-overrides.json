@@ -1,0 +1,9 @@
+{
+  "comment": "Codex settings for every baseline run, given as `codex exec -c key=value`. The harness also gives --ignore-user-config, so ~/.codex/config.toml has no effect. The permission profile extends the workspace-write sandbox. It lets Terraform providers open their plugin socket in the temporary directory. That needs network.enabled, which also permits outbound network. The harness removes AWS credentials from the environment of the agent.",
+  "overrides": {
+    "default_permissions": "baseline",
+    "permissions.baseline.extends": ":workspace",
+    "permissions.baseline.network.enabled": true,
+    "permissions.baseline.network.unix_sockets": {"{tmpdir}": "allow"}
+  }
+}

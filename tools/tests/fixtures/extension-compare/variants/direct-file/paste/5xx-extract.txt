@@ -1,0 +1,200 @@
+2026-11-17T18:25:31.010Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.010Z     )
+2026-11-17T18:25:31.010Z     ^
+2026-11-17T18:25:31.010Z   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 2779, in run_sync_in_worker_thread
+2026-11-17T18:25:31.010Z     return await future
+2026-11-17T18:25:31.010Z            ^^^^^^^^^^^^
+2026-11-17T18:25:31.010Z   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1124, in run
+2026-11-17T18:25:31.010Z     result = context.run(func, *args)
+2026-11-17T18:25:31.010Z   File "/srv/app/main.py", line 52, in api_list_services
+2026-11-17T18:25:31.010Z     return [Service(**item) for item in store.list_services()]
+2026-11-17T18:25:31.010Z                                         ~~~~~~~~~~~~~~~~~~~^^
+2026-11-17T18:25:31.010Z   File "/srv/app/store.py", line 67, in list_services
+2026-11-17T18:25:31.010Z     items = table.scan().get("Items", [])
+2026-11-17T18:25:31.010Z             ~~~~~~~~~~^^
+2026-11-17T18:25:31.010Z   File "/usr/local/lib/python3.13/site-packages/boto3/resources/factory.py", line 581, in do_action
+2026-11-17T18:25:31.010Z     response = action(self, *args, **kwargs)
+2026-11-17T18:25:31.010Z   File "/usr/local/lib/python3.13/site-packages/boto3/resources/action.py", line 88, in __call__
+2026-11-17T18:25:31.010Z     response = getattr(parent.meta.client, operation_name)(*args, **params)
+2026-11-17T18:25:31.010Z   File "/usr/local/lib/python3.13/site-packages/botocore/client.py", line 606, in _api_call
+2026-11-17T18:25:31.010Z     return self._make_api_call(operation_name, kwargs)
+2026-11-17T18:25:31.010Z            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.010Z   File "/usr/local/lib/python3.13/site-packages/botocore/context.py", line 123, in wrapper
+2026-11-17T18:25:31.010Z     return func(*args, **kwargs)
+2026-11-17T18:25:31.010Z   File "/usr/local/lib/python3.13/site-packages/botocore/client.py", line 1094, in _make_api_call
+2026-11-17T18:25:31.010Z     raise error_class(parsed_response, operation_name)
+2026-11-17T18:25:31.010Z botocore.exceptions.ClientError: An error occurred (AccessDeniedException) when calling the Scan operation: User: arn:aws:sts::111122223333:assumed-role/tokenomics-status-board-task/30692f1ff9ad4ce38bfdbf39ec5b2853 is not authorized to perform: dynamodb:Scan on resource: arn:aws:dynamodb:us-east-1:111122223333:table/tokenomics-status-board-services because no identity-based policy allows the dynamodb:Scan action
+2026-11-17T18:25:31.297Z INFO:     10.20.1.120:40476 - "GET /api/services/checkout-api HTTP/1.1" 500 Internal Server Error
+2026-11-17T18:25:31.301Z ERROR:    Exception in ASGI application
+2026-11-17T18:25:31.301Z Traceback (most recent call last):
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 422, in run_asgi
+2026-11-17T18:25:31.301Z     result = await app(  # type: ignore[func-returns-value]
+2026-11-17T18:25:31.301Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z         self.scope, self.receive, self.send
+2026-11-17T18:25:31.301Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z     )
+2026-11-17T18:25:31.301Z     ^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 63, in __call__
+2026-11-17T18:25:31.301Z     return await self.app(scope, receive, send)
+2026-11-17T18:25:31.301Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/fastapi/applications.py", line 1163, in __call__
+2026-11-17T18:25:31.301Z     await super().__call__(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/applications.py", line 96, in __call__
+2026-11-17T18:25:31.301Z     await self.middleware_stack(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+2026-11-17T18:25:31.301Z     raise exc
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+2026-11-17T18:25:31.301Z     await self.app(scope, receive, _send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+2026-11-17T18:25:31.301Z     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+2026-11-17T18:25:31.301Z     raise exc
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+2026-11-17T18:25:31.301Z     await app(scope, receive, sender)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+2026-11-17T18:25:31.301Z     await self.app(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 683, in __call__
+2026-11-17T18:25:31.301Z     await self.middleware_stack(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 2734, in app
+2026-11-17T18:25:31.301Z     await route.handle(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 1281, in handle
+2026-11-17T18:25:31.301Z     await super().handle(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 289, in handle
+2026-11-17T18:25:31.301Z     await self.app(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 158, in app
+2026-11-17T18:25:31.301Z     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+2026-11-17T18:25:31.301Z     raise exc
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+2026-11-17T18:25:31.301Z     await app(scope, receive, sender)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 144, in app
+2026-11-17T18:25:31.301Z     response = await f(request)
+2026-11-17T18:25:31.301Z                ^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 706, in app
+2026-11-17T18:25:31.301Z     raw_response = await run_endpoint_function(
+2026-11-17T18:25:31.301Z                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z     ...<3 lines>...
+2026-11-17T18:25:31.301Z     )
+2026-11-17T18:25:31.301Z     ^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 354, in run_endpoint_function
+2026-11-17T18:25:31.301Z     return await run_in_threadpool(dependant.call, **values)
+2026-11-17T18:25:31.301Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
+2026-11-17T18:25:31.301Z     return await anyio.to_thread.run_sync(func)
+2026-11-17T18:25:31.301Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/anyio/to_thread.py", line 65, in run_sync
+2026-11-17T18:25:31.301Z     return await get_async_backend().run_sync_in_worker_thread(
+2026-11-17T18:25:31.301Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z         func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+2026-11-17T18:25:31.301Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z     )
+2026-11-17T18:25:31.301Z     ^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 2779, in run_sync_in_worker_thread
+2026-11-17T18:25:31.301Z     return await future
+2026-11-17T18:25:31.301Z            ^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1124, in run
+2026-11-17T18:25:31.301Z     result = context.run(func, *args)
+2026-11-17T18:25:31.301Z   File "/srv/app/main.py", line 66, in api_get_service
+2026-11-17T18:25:31.301Z     item = store.get_service(clean_id)
+2026-11-17T18:25:31.301Z   File "/srv/app/store.py", line 75, in get_service
+2026-11-17T18:25:31.301Z     item = table.get_item(Key={"service_id": service_id}).get("Item")
+2026-11-17T18:25:31.301Z            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/boto3/resources/factory.py", line 581, in do_action
+2026-11-17T18:25:31.301Z     response = action(self, *args, **kwargs)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/boto3/resources/action.py", line 88, in __call__
+2026-11-17T18:25:31.301Z     response = getattr(parent.meta.client, operation_name)(*args, **params)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/botocore/client.py", line 606, in _api_call
+2026-11-17T18:25:31.301Z     return self._make_api_call(operation_name, kwargs)
+2026-11-17T18:25:31.301Z            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/botocore/context.py", line 123, in wrapper
+2026-11-17T18:25:31.301Z     return func(*args, **kwargs)
+2026-11-17T18:25:31.301Z   File "/usr/local/lib/python3.13/site-packages/botocore/client.py", line 1094, in _make_api_call
+2026-11-17T18:25:31.301Z     raise error_class(parsed_response, operation_name)
+2026-11-17T18:25:31.301Z botocore.exceptions.ClientError: An error occurred (AccessDeniedException) when calling the GetItem operation: User: arn:aws:sts::111122223333:assumed-role/tokenomics-status-board-task/30692f1ff9ad4ce38bfdbf39ec5b2853 is not authorized to perform: dynamodb:GetItem on resource: arn:aws:dynamodb:us-east-1:111122223333:table/tokenomics-status-board-services because no identity-based policy allows the dynamodb:GetItem action
+2026-11-17T18:26:59.363Z INFO:     10.20.1.120:5470 - "GET / HTTP/1.1" 500 Internal Server Error
+2026-11-17T18:26:59.367Z ERROR:    Exception in ASGI application
+2026-11-17T18:26:59.367Z Traceback (most recent call last):
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 422, in run_asgi
+2026-11-17T18:26:59.367Z     result = await app(  # type: ignore[func-returns-value]
+2026-11-17T18:26:59.367Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z         self.scope, self.receive, self.send
+2026-11-17T18:26:59.367Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z     )
+2026-11-17T18:26:59.367Z     ^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 63, in __call__
+2026-11-17T18:26:59.367Z     return await self.app(scope, receive, send)
+2026-11-17T18:26:59.367Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/fastapi/applications.py", line 1163, in __call__
+2026-11-17T18:26:59.367Z     await super().__call__(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/applications.py", line 96, in __call__
+2026-11-17T18:26:59.367Z     await self.middleware_stack(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+2026-11-17T18:26:59.367Z     raise exc
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+2026-11-17T18:26:59.367Z     await self.app(scope, receive, _send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+2026-11-17T18:26:59.367Z     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+2026-11-17T18:26:59.367Z     raise exc
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+2026-11-17T18:26:59.367Z     await app(scope, receive, sender)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+2026-11-17T18:26:59.367Z     await self.app(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 683, in __call__
+2026-11-17T18:26:59.367Z     await self.middleware_stack(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 2734, in app
+2026-11-17T18:26:59.367Z     await route.handle(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 1281, in handle
+2026-11-17T18:26:59.367Z     await super().handle(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 289, in handle
+2026-11-17T18:26:59.367Z     await self.app(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 158, in app
+2026-11-17T18:26:59.367Z     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+2026-11-17T18:26:59.367Z     raise exc
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+2026-11-17T18:26:59.367Z     await app(scope, receive, sender)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 144, in app
+2026-11-17T18:26:59.367Z     response = await f(request)
+2026-11-17T18:26:59.367Z                ^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 706, in app
+2026-11-17T18:26:59.367Z     raw_response = await run_endpoint_function(
+2026-11-17T18:26:59.367Z                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z     ...<3 lines>...
+2026-11-17T18:26:59.367Z     )
+2026-11-17T18:26:59.367Z     ^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 354, in run_endpoint_function
+2026-11-17T18:26:59.367Z     return await run_in_threadpool(dependant.call, **values)
+2026-11-17T18:26:59.367Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
+2026-11-17T18:26:59.367Z     return await anyio.to_thread.run_sync(func)
+2026-11-17T18:26:59.367Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/anyio/to_thread.py", line 65, in run_sync
+2026-11-17T18:26:59.367Z     return await get_async_backend().run_sync_in_worker_thread(
+2026-11-17T18:26:59.367Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z         func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+2026-11-17T18:26:59.367Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z     )
+2026-11-17T18:26:59.367Z     ^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 2779, in run_sync_in_worker_thread
+2026-11-17T18:26:59.367Z     return await future
+2026-11-17T18:26:59.367Z            ^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 1124, in run
+2026-11-17T18:26:59.367Z     result = context.run(func, *args)
+2026-11-17T18:26:59.367Z   File "/srv/app/main.py", line 81, in board
+2026-11-17T18:26:59.367Z     services = store.list_services()
+2026-11-17T18:26:59.367Z   File "/srv/app/store.py", line 67, in list_services
+2026-11-17T18:26:59.367Z     items = table.scan().get("Items", [])
+2026-11-17T18:26:59.367Z             ~~~~~~~~~~^^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/boto3/resources/factory.py", line 581, in do_action
+2026-11-17T18:26:59.367Z     response = action(self, *args, **kwargs)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/boto3/resources/action.py", line 88, in __call__
+2026-11-17T18:26:59.367Z     response = getattr(parent.meta.client, operation_name)(*args, **params)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/botocore/client.py", line 606, in _api_call
+2026-11-17T18:26:59.367Z     return self._make_api_call(operation_name, kwargs)
+2026-11-17T18:26:59.367Z            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/botocore/context.py", line 123, in wrapper
+2026-11-17T18:26:59.367Z     return func(*args, **kwargs)
+2026-11-17T18:26:59.367Z   File "/usr/local/lib/python3.13/site-packages/botocore/client.py", line 1094, in _make_api_call
+2026-11-17T18:26:59.367Z     raise error_class(parsed_response, operation_name)
+2026-11-17T18:26:59.367Z botocore.exceptions.ClientError: An error occurred (AccessDeniedException) when calling the Scan operation: User: arn:aws:sts::111122223333:assumed-role/tokenomics-status-board-task/30692f1ff9ad4ce38bfdbf39ec5b2853 is not authorized to perform: dynamodb:Scan on resource: arn:aws:dynamodb:us-east-1:111122223333:table/tokenomics-status-board-services because no identity-based policy allows the dynamodb:Scan action

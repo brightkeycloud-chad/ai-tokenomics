@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "run_id": "20261116-113517-app-post-incident-codex",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "app-post-incident",
+    "tool": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "workload": "status-board-app",
+    "workload_tree": "d38981bbdc85",
+    "prompt_sha": "a0e49c99b43c"
+  },
+  "agent": {
+    "exit_code": 0,
+    "timed_out": false,
+    "wall_seconds": 57.0
+  },
+  "changed": [
+    "app/main.py",
+    "app/models.py",
+    "tests/test_api.py"
+  ],
+  "checks": {
+    "acceptance": [
+      {
+        "rule": "pytest",
+        "ok": true,
+        "failed": []
+      }
+    ],
+    "rules": [
+      {
+        "rule": "1 validate in validators.py",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "2 DynamoDB only through store.py",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "3 return a model",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "4 test every route",
+        "ok": true,
+        "failed": []
+      },
+      {
+        "rule": "5 /healthz free of dependencies",
+        "ok": true,
+        "failed": []
+      }
+    ]
+  },
+  "row": {
+    "run_id": "20261116-113517-app-post-incident-codex",
+    "date": "2026-11-16",
+    "rep": 1,
+    "task": "app-post-incident",
+    "tool": "codex",
+    "tool_version": "0.169.0",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "workload_tree": "d38981bbdc85",
+    "prompt_sha": "a0e49c99b43c",
+    "tests_pass": "yes",
+    "rules_followed": "yes",
+    "manual_fixes": 0,
+    "input": 25596,
+    "cache_write": 0,
+    "cache_read": 83840,
+    "output": 2042,
+    "reasoning": 153,
+    "context_peak": 24758,
+    "cache_hit": 0.766,
+    "cost_list_usd": 0.08,
+    "cost_credits": 1.9999,
+    "vendor_estimate_usd": "",
+    "window_5h_pct": 1.0,
+    "wall_seconds": 57.0,
+    "api_seconds": 53.3,
+    "your_seconds": 0,
+    "rules_broken": "",
+    "notes": ""
+  }
+}

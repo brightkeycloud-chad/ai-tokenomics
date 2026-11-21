@@ -1,0 +1,58 @@
+{
+  "_note": "A sample of the JSON that Claude Code sends to the status line on stdin. install.sh uses it to test the status line. The values come from a real Claude Code session. The sample has no paths and no session IDs.",
+  "session_id": "00000000-0000-0000-0000-000000000000",
+  "cwd": "/home/user/project",
+  "model": {
+    "id": "claude-haiku-5-5",
+    "display_name": "Haiku 5.5"
+  },
+  "effort": {
+    "level": "medium"
+  },
+  "cost": {
+    "total_cost_usd": 0.017119905,
+    "total_duration_ms": 26350,
+    "total_api_duration_ms": 34827,
+    "total_lines_added": 0,
+    "total_lines_removed": 0
+  },
+  "context_window": {
+    "total_input_tokens": 54261,
+    "total_output_tokens": 1144,
+    "context_window_size": 1000000,
+    "current_usage": {
+      "input_tokens": 4,
+      "output_tokens": 1144,
+      "cache_creation_input_tokens": 1860,
+      "cache_read_input_tokens": 52397
+    },
+    "used_percentage": 5,
+    "remaining_percentage": 95
+  },
+  "prompt_cache": {
+    "warm": true,
+    "caching_observed": true,
+    "ttl": "1h",
+    "expires_at": 1794787808,
+    "requests": 6,
+    "misses": 0,
+    "expected_rebuilds": 0,
+    "hit_ratio": 0.9143758881655045,
+    "cache_write_tokens": 25895,
+    "miss_recache_tokens": 0,
+    "last_miss_at": null,
+    "last_miss_cause": null,
+    "miss_causes": {},
+    "recache_tokens_if_cold": 54261
+  },
+  "rate_limits": {
+    "five_hour": {
+      "used_percentage": 20,
+      "resets_at": 1794801600
+    },
+    "seven_day": {
+      "used_percentage": 13,
+      "resets_at": 1795248000
+    }
+  }
+}

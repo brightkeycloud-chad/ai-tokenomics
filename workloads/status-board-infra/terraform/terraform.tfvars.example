@@ -1,0 +1,9 @@
+# Optional. Copy to terraform.tfvars to change the defaults when you run
+# Terraform locally. In GitHub Actions, set repository variables instead
+# (HOSTED_ZONE_NAME, SUBDOMAIN, CERTIFICATE_DOMAIN, ENV_NAME).
+
+hosted_zone_name = "awsf.brightkey.cloud"
+subdomain        = "tokenomics"
+
+# Primary name of the ACM certificate. Empty means hosted_zone_name.
+certificate_domain = ""

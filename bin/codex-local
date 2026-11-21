@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+"""Start Codex on the local Ollama model, for this process only.
+
+    codex-local                     Codex on the model in config/local/ollama.json
+    codex-local exec "PROMPT"       codex exec on the local model
+    codex-local --fallback          on the fallback model
+    codex-local --show              show the settings and the command; start nothing
+
+Your shell profile, ~/.codex/config.toml, and your ChatGPT sign-in do not
+change. `codex` in another terminal still uses your subscription. See
+tools/tokenomics/codexlocal.py.
+"""
+import pathlib
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "tools"))
+
+from tokenomics.codexlocal import main  # noqa: E402
+
+sys.exit(main())

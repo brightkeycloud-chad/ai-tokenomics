@@ -1,0 +1,35 @@
+# Runs the board and a local DynamoDB together:
+#
+#   docker compose up --build -d
+#   ./venv/bin/python -m scripts.create_tables
+#   ./venv/bin/python -m scripts.seed
+#
+# The board is then at http://localhost:8080 and the local DynamoDB listens on
+# port 8001. Storage is in memory, so every `docker compose up` starts from an
+# empty board.
+
+services:
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    command: ["-jar", "DynamoDBLocal.jar", "-inMemory", "-sharedDb"]
+    ports:
+      - "8001:8000"
+
+  app:
+    build:
+      context: .
+      # Fargate runs this on Graviton. Build the same architecture locally.
+      args: {}
+    platform: linux/arm64
+    ports:
+      - "8080:8080"
+    environment:
+      DYNAMODB_ENDPOINT_URL: http://dynamodb:8000
+      AWS_REGION: us-east-1
+      # DynamoDB Local checks that credentials are present, not that they are
+      # real. Nothing here reaches AWS.
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+      LOG_LEVEL: INFO
+    depends_on:
+      - dynamodb

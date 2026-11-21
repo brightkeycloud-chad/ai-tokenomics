@@ -1,0 +1,1 @@
+run_id,date,rep,task,tool,tool_version,model,effort,workload_tree,prompt_sha,variant,config,tests_pass,rules_followed,manual_fixes,input,cache_write,cache_read,output,reasoning,context_peak,cache_hit,cost_list_usd,cost_credits,vendor_estimate_usd,window_5h_pct,wall_seconds,api_seconds,your_seconds,rules_broken,notes

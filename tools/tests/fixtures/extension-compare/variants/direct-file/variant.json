@@ -1,0 +1,6 @@
+{
+  "name": "direct-file",
+  "title": "A log extract, exported from the log group by scripts/export-logs.sh, pasted into the prompt",
+  "workload": "status-board-app",
+  "paste": "paste/5xx-extract.txt"
+}
